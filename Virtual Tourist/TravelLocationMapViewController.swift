@@ -12,9 +12,11 @@ import MapKit
 class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
 
     // MARK: Outlets & Properties
+    
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var editDoneButton: UIBarButtonItem!
     @IBOutlet weak var tapPinsToDeleteView: UIView!
+    
     var operationModeAddDelete:Bool = true
     let stack = (UIApplication.shared.delegate as! AppDelegate).stack
     var selectedPin:Pin? = nil
@@ -98,7 +100,8 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
             print(["name":annotation.title,"latitude":"\(newCoordinates.latitude)","longitude":"\(newCoordinates.longitude)"])
             mapView.addAnnotation(annotation)
 
-            // TODO: Store the pin data in CoreData DB.
+            // Storing the pin data in CoreData DB
+            _ = Pin(lat: newCoordinates.latitude, lon: newCoordinates.longitude, context: stack.context)
         }
     }
     
