@@ -17,6 +17,13 @@
 		CBBDF4C21E4648300093F778 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBDF4C11E4648300093F778 /* CoreDataStack.swift */; };
 		CBBDF4C51E46489C0093F778 /* virtualTouristModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CBBDF4C31E46489C0093F778 /* virtualTouristModel.xcdatamodeld */; };
 		CBBDF4C71E464B3C0093F778 /* PhotoAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBDF4C61E464B3C0093F778 /* PhotoAlbumViewController.swift */; };
+		CBEF31B61E47A9CF0031F4ED /* Map+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEF31B41E47A9CF0031F4ED /* Map+CoreDataClass.swift */; };
+		CBEF31B71E47A9CF0031F4ED /* Map+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEF31B51E47A9CF0031F4ED /* Map+CoreDataProperties.swift */; };
+		CBEF31BC1E47AA010031F4ED /* Photo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEF31B81E47AA010031F4ED /* Photo+CoreDataClass.swift */; };
+		CBEF31BD1E47AA010031F4ED /* Photo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEF31B91E47AA010031F4ED /* Photo+CoreDataProperties.swift */; };
+		CBEF31BE1E47AA010031F4ED /* Pin+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEF31BA1E47AA010031F4ED /* Pin+CoreDataClass.swift */; };
+		CBEF31BF1E47AA010031F4ED /* Pin+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEF31BB1E47AA010031F4ED /* Pin+CoreDataProperties.swift */; };
+		CBEF31C11E47B88B0031F4ED /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEF31C01E47B88B0031F4ED /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +60,13 @@
 		CBBDF4C11E4648300093F778 /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		CBBDF4C41E46489C0093F778 /* virtualTouristModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = virtualTouristModel.xcdatamodel; sourceTree = "<group>"; };
 		CBBDF4C61E464B3C0093F778 /* PhotoAlbumViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoAlbumViewController.swift; sourceTree = "<group>"; };
+		CBEF31B41E47A9CF0031F4ED /* Map+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Map+CoreDataClass.swift"; sourceTree = "<group>"; };
+		CBEF31B51E47A9CF0031F4ED /* Map+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Map+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		CBEF31B81E47AA010031F4ED /* Photo+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Photo+CoreDataClass.swift"; sourceTree = "<group>"; };
+		CBEF31B91E47AA010031F4ED /* Photo+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Photo+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		CBEF31BA1E47AA010031F4ED /* Pin+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Pin+CoreDataClass.swift"; sourceTree = "<group>"; };
+		CBEF31BB1E47AA010031F4ED /* Pin+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Pin+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		CBEF31C01E47B88B0031F4ED /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +121,7 @@
 				CBBDF4BD1E46478C0093F778 /* View */,
 				CBBDF4BC1E4647870093F778 /* Model */,
 				CBBDF48E1E46476A0093F778 /* AppDelegate.swift */,
+				CBEF31C01E47B88B0031F4ED /* Constants.swift */,
 				CBBDF49A1E46476A0093F778 /* Info.plist */,
 			);
 			path = "Virtual Tourist";
@@ -134,6 +149,12 @@
 			isa = PBXGroup;
 			children = (
 				CBBDF4C11E4648300093F778 /* CoreDataStack.swift */,
+				CBEF31B41E47A9CF0031F4ED /* Map+CoreDataClass.swift */,
+				CBEF31B51E47A9CF0031F4ED /* Map+CoreDataProperties.swift */,
+				CBEF31B81E47AA010031F4ED /* Photo+CoreDataClass.swift */,
+				CBEF31B91E47AA010031F4ED /* Photo+CoreDataProperties.swift */,
+				CBEF31BA1E47AA010031F4ED /* Pin+CoreDataClass.swift */,
+				CBEF31BB1E47AA010031F4ED /* Pin+CoreDataProperties.swift */,
 				CBBDF4C31E46489C0093F778 /* virtualTouristModel.xcdatamodeld */,
 			);
 			name = Model;
@@ -296,10 +317,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				CBBDF4C51E46489C0093F778 /* virtualTouristModel.xcdatamodeld in Sources */,
+				CBEF31BE1E47AA010031F4ED /* Pin+CoreDataClass.swift in Sources */,
 				CBBDF4C21E4648300093F778 /* CoreDataStack.swift in Sources */,
+				CBEF31BF1E47AA010031F4ED /* Pin+CoreDataProperties.swift in Sources */,
+				CBEF31BC1E47AA010031F4ED /* Photo+CoreDataClass.swift in Sources */,
+				CBEF31B61E47A9CF0031F4ED /* Map+CoreDataClass.swift in Sources */,
 				CBBDF4911E46476A0093F778 /* TravelLocationMapViewController.swift in Sources */,
+				CBEF31B71E47A9CF0031F4ED /* Map+CoreDataProperties.swift in Sources */,
+				CBEF31BD1E47AA010031F4ED /* Photo+CoreDataProperties.swift in Sources */,
 				CBBDF4C71E464B3C0093F778 /* PhotoAlbumViewController.swift in Sources */,
 				CBBDF48F1E46476A0093F778 /* AppDelegate.swift in Sources */,
+				CBEF31C11E47B88B0031F4ED /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -550,6 +578,7 @@
 				CBBDF4B51E46476A0093F778 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		CBBDF4B61E46476A0093F778 /* Build configuration list for PBXNativeTarget "Virtual TouristTests" */ = {
 			isa = XCConfigurationList;
@@ -558,6 +587,7 @@
 				CBBDF4B81E46476A0093F778 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		CBBDF4B91E46476A0093F778 /* Build configuration list for PBXNativeTarget "Virtual TouristUITests" */ = {
 			isa = XCConfigurationList;
@@ -566,6 +596,7 @@
 				CBBDF4BB1E46476A0093F778 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

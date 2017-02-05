@@ -35,7 +35,8 @@
                     </view>
                     <navigationItem key="navigationItem" id="qjB-cb-rIb"/>
                     <connections>
-                        <segue destination="2dy-bI-DtK" kind="show" id="spD-xd-I2S"/>
+                        <outlet property="mapView" destination="GhC-ad-1HO" id="3Y7-n4-2Rc"/>
+                        <segue destination="2dy-bI-DtK" kind="show" identifier="travelViewToPhotoAlbumSegue" id="spD-xd-I2S"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -95,6 +96,9 @@
                             <constraint firstItem="Pqy-g4-jgc" firstAttribute="top" secondItem="kto-rW-849" secondAttribute="bottom" constant="8" id="fb5-hR-NKz"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="mapViewPhotoAlbum" destination="yJb-hp-78o" id="4GC-Xp-yVm"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Poc-xv-S8K" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

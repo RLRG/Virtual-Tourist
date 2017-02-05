@@ -1,18 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="16D32" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="Map" representedClassName="Map" syncable="YES" codeGenerationType="class">
+    <entity name="Map" representedClassName=".Map" syncable="YES">
         <attribute name="centerLatitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="centerLongitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="zoomLevel" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="pins" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Pin" inverseName="map" inverseEntity="Pin" syncable="YES"/>
     </entity>
-    <entity name="Photo" representedClassName="Photo" syncable="YES" codeGenerationType="class"/>
-    <entity name="Pin" representedClassName="Pin" syncable="YES" codeGenerationType="class">
+    <entity name="Photo" representedClassName=".Photo" syncable="YES">
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="pin" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Pin" inverseName="photos" inverseEntity="Pin" syncable="YES"/>
+    </entity>
+    <entity name="Pin" representedClassName=".Pin" syncable="YES">
         <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="map" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Map" inverseName="pins" inverseEntity="Map" syncable="YES"/>
+        <relationship name="photos" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Photo" inverseName="pin" inverseEntity="Photo" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Map" positionX="-63" positionY="-18" width="128" height="90"/>
-        <element name="Pin" positionX="-54" positionY="-9" width="128" height="75"/>
-        <element name="Photo" positionX="-36" positionY="9" width="128" height="45"/>
+        <element name="Map" positionX="-90" positionY="-18" width="128" height="103"/>
+        <element name="Photo" positionX="234" positionY="-129" width="128" height="88"/>
+        <element name="Pin" positionX="16" positionY="-186" width="128" height="103"/>
     </elements>
 </model>

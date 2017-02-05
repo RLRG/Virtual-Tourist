@@ -7,18 +7,38 @@
 //
 
 import UIKit
+import MapKit
 
-class PhotoAlbumViewController : UIViewController {
+class PhotoAlbumViewController : UIViewController, MKMapViewDelegate {
     
+    // MARK: Outlets & Properties
+    @IBOutlet weak var mapViewPhotoAlbum: MKMapView!
+    var selectedPin:Pin!
+    
+    // MARK: Initializers
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+    
+        // Setting the OK navigation item
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem (title: "OK", style: UIBarButtonItemStyle.plain, target: self, action: #selector(PhotoAlbumViewController.backButton))
+        
+        // TODO: Configure Flickr.
+        // TODO: Create the network request to get the images when opening this new screen.
+        
+        
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    // MARK: Navigation
+    func backButton (){
+        if let navigationController = self.navigationController {
+            navigationController.popViewController(animated: true)
+        }
     }
     
+    // MARK: Actions
+    
+    // TODO: New Collection button action (reload the request).
+    // TODO: Select a photo (or several photos) and display the button "Remove Selected Pictures".
+    // TODO: Remove selected pictures action. a) Remove them from the CoreData BD, b) Update UICollectionView.
     
 }
