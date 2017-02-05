@@ -24,18 +24,46 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="GhC-ad-1HO">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                             </mapView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a4q-aR-O7Y">
+                                <rect key="frame" x="0.0" y="607" width="375" height="60"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap Pins to Delete" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FSZ-q0-xWH">
+                                        <rect key="frame" x="97.5" y="18" width="180" height="25.5"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
+                                        <color key="textColor" red="0.98416489362716675" green="0.95706444978713989" blue="0.95207899808883667" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.99810868501663208" green="0.056365184485912323" blue="0.033155109733343124" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="cHy-zc-cmy"/>
+                                    <constraint firstItem="FSZ-q0-xWH" firstAttribute="centerY" secondItem="a4q-aR-O7Y" secondAttribute="centerY" id="sjl-PB-F08"/>
+                                    <constraint firstItem="FSZ-q0-xWH" firstAttribute="centerX" secondItem="a4q-aR-O7Y" secondAttribute="centerX" id="sk2-fu-k70"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="GhC-ad-1HO" secondAttribute="bottom" id="4aW-8A-zsq"/>
                             <constraint firstItem="GhC-ad-1HO" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="8vp-pR-6Gn"/>
+                            <constraint firstAttribute="trailing" secondItem="a4q-aR-O7Y" secondAttribute="trailing" id="LHx-Y0-uQY"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="a4q-aR-O7Y" secondAttribute="bottom" id="MIv-a0-b9Y"/>
+                            <constraint firstItem="a4q-aR-O7Y" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="cwP-t9-WC8"/>
                             <constraint firstItem="GhC-ad-1HO" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="h9q-it-BYb"/>
                             <constraint firstAttribute="trailing" secondItem="GhC-ad-1HO" secondAttribute="trailing" id="u3C-9a-LlP"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="qjB-cb-rIb"/>
+                    <navigationItem key="navigationItem" id="qjB-cb-rIb">
+                        <barButtonItem key="rightBarButtonItem" title="Edit" id="dpl-AU-UYs">
+                            <connections>
+                                <action selector="editDoneButton:" destination="BYZ-38-t0r" id="VGd-qR-zDr"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
+                        <outlet property="editDoneButton" destination="dpl-AU-UYs" id="iAt-IE-2uj"/>
                         <outlet property="mapView" destination="GhC-ad-1HO" id="3Y7-n4-2Rc"/>
+                        <outlet property="tapPinsToDeleteView" destination="a4q-aR-O7Y" id="1CE-Uw-Tnc"/>
                         <segue destination="2dy-bI-DtK" kind="show" identifier="travelViewToPhotoAlbumSegue" id="spD-xd-I2S"/>
                     </connections>
                 </viewController>

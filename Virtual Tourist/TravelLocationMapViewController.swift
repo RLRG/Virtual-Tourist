@@ -13,22 +13,40 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
 
     // MARK: Outlets & Properties
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var editDoneButton: UIBarButtonItem!
+    @IBOutlet weak var tapPinsToDeleteView: UIView!
+    var operationModeAddDelete:Bool = true
     let stack = (UIApplication.shared.delegate as! AppDelegate).stack
     var selectedPin:Pin? = nil
+    
     
     // MARK: Initializers
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Displaying the pins on the map
-        displayPinsOnTheMap()
-        
         // Configuring gesture recognizer to add a pin
         let gestureRecognizer_TapAndHold = UILongPressGestureRecognizer(target: self, action: #selector(TravelLocationMapViewController.addPinOnTheMap(_:)))
         gestureRecognizer_TapAndHold.minimumPressDuration = 1.0
         mapView.addGestureRecognizer(gestureRecognizer_TapAndHold)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
+        // Initializing values to be in "Add" operation mode by default.
+        tapPinsToDeleteView.isHidden = true
+        operationModeAddDelete = true
         
+        // Initializing UI
+        performUIUpdatesOnMain {
+            
+            // TODO: Load the map in the center and with the zoom stored in CoreData.
+            // Query the CoreData DB.
+            // mapView.setCenter(<#T##coordinate: CLLocationCoordinate2D##CLLocationCoordinate2D#>, animated: <#T##Bool#>)
+            
+            // Displaying the pins on the map
+            self.displayPinsOnTheMap()
+        }
     }
 
     func displayPinsOnTheMap(){
@@ -79,13 +97,37 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
             
             print(["name":annotation.title,"latitude":"\(newCoordinates.latitude)","longitude":"\(newCoordinates.longitude)"])
             mapView.addAnnotation(annotation)
-            
+
             // TODO: Store the pin data in CoreData DB.
         }
     }
     
-    // TODO: Add the action to remove pins from the map (Edit button at the top and tapping on a pin means to remove that pin) and remove that pin from CoreData.
     // TODO: Persist the map information: Center, zoom level...
+    func persistMapInfo() {
+        // mapView.centerCoordinate.latitude
+        // mapView.centerCoordinate.longitude
+        // TODO: How do I get the zoom level of the map?
+    }
+    
+    // This action is used in order to switch between the two operation modes of the screen:
+    // 1- Add pins / 2- Delete pins.
+    @IBAction func editDoneButton(_ sender: Any) {
+        
+        if (operationModeAddDelete == true) {
+            operationModeAddDelete = false
+            performUIUpdatesOnMain {
+                self.editDoneButton.title = "Done"
+                self.tapPinsToDeleteView.isHidden = false
+            }
+        }else {
+            operationModeAddDelete = true
+            performUIUpdatesOnMain {
+                self.editDoneButton.title = "Edit"
+                self.tapPinsToDeleteView.isHidden = true
+            }
+        }
+    }
+    
     
     
     // MARK: - MKMapViewDelegate
@@ -116,12 +158,13 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         
         // TODO: Fix the "Tap on a pin" functionality. It does not work !!
-        
-        selectedPin = getPinFromAnnotation(view.annotation as! MKPointAnnotation)
-        performSegue(withIdentifier: Constants.SegueIdentifiers.travelViewToPhotoAlbumSegue, sender: nil)
-        
-        // TODO: Delete pin when it is selected if we are in "Removing mode". Idea: Including a flag to distinguish between the two operation modes.
-        
+        // Action: Tapping on a pin.
+        if operationModeAddDelete { // Operation mode: "Add"
+            selectedPin = getPinFromAnnotation(view.annotation as! MKPointAnnotation)
+            performSegue(withIdentifier: Constants.SegueIdentifiers.travelViewToPhotoAlbumSegue, sender: nil)
+        } else { // Operation mode: "Delete"
+            // TODO: Delete pin when it is selected if we are in "Removing mode".
+        }
     }
     
     func getPinFromAnnotation (_ annotation: MKPointAnnotation) -> Pin {

@@ -38,6 +38,7 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate {
     // MARK: Actions
     
     // TODO: New Collection button action (reload the request).
+    // TODO: Enable New Collection button when the result of the request has arrived and disable button when the request is still loading.
     // TODO: Select a photo (or several photos) and display the button "Remove Selected Pictures".
     // TODO: Remove selected pictures action. a) Remove them from the CoreData BD, b) Update UICollectionView.
     
