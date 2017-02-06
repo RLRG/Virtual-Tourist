@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import CoreData
 
 class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
 
@@ -103,20 +104,19 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
     func displayPinsOnTheMap(){
         
         // The "locations" array:
-        // TODO: Query to the database the stored pins and keep them in "locations" variable
-        let locations = [[String:AnyObject]]()
+        let pins = getPinsFromDB()
         
         // We will create an MKPointAnnotation for each dictionary in "locations". The
         // point annotations will be stored in this array, and then provided to the map view.
         var annotations = [MKPointAnnotation]()
         
         // The "locations" array is loaded.
-        for location in locations {
+        for pin:Pin in pins {
             
             // Notice that the float values are being used to create CLLocationDegree values.
             // This is a version of the Double type.
-            let lat = CLLocationDegrees(location["lat"] as! Double)
-            let long = CLLocationDegrees(location["lat"] as! Double)
+            let lat = CLLocationDegrees(pin.latitude)
+            let long = CLLocationDegrees(pin.longitude)
             
             // The lat and long are used to create a CLLocationCoordinates2D instance.
             let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
@@ -124,8 +124,8 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
             // Here we create the annotation and set its coordinate, title, and subtitle properties
             let annotation = MKPointAnnotation()
             annotation.coordinate = coordinate
-            annotation.title = location["title"] as? String // TODO: Set the title of the pin.
-            annotation.subtitle = location["subtitle"] as? String // TODO: Set the subtitle of the pin.
+            annotation.title = "Title test" // TODO: Set the title of the pin.
+            annotation.subtitle = "Subtitle test" // TODO: Set the subtitle of the pin.
             
             // Finally we place the annotation in an array of annotations.
             annotations.append(annotation)
@@ -135,10 +135,36 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
         self.mapView.addAnnotations(annotations)
     }
     
+    func getPinsFromDB() -> [Pin] {
+        var pins = [Pin]()
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Pin")
+        do {
+            let results = try stack.context.fetch(fetchRequest)
+            pins = results as! [Pin]
+        } catch let error as NSError {
+            print("An error occured accessing managed object context \(error.localizedDescription)")
+        }
+        return pins
+    }
+    
     func getPinFromAnnotation (_ annotation: MKPointAnnotation) -> Pin {
-        // TODO: Fetch request looking for the corresponding Pin. For now, we create a new pin object in CoreData.
-        let pin = Pin(lat: annotation.coordinate.latitude, lon: annotation.coordinate.longitude, context: stack.context)
-        return pin
+        // Fetch request looking for the corresponding Pin.
+        var pins = [Pin]()
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Pin")
+        let pred = NSPredicate(format: "latitude = %@ and longitude = %@", argumentArray: [annotation.coordinate.latitude, annotation.coordinate.longitude])
+        fetchRequest.predicate = pred
+        do {
+            let result = try stack.context.fetch(fetchRequest)
+            pins = result as! [Pin]
+        } catch let error as NSError {
+            print("An error occured accessing managed object context \(error.localizedDescription)")
+        }
+        return pins[0]
+    }
+    
+    func deleteInDB(pin: Pin) {
+        stack.context.delete(pin)
+        stack.save()
     }
     
     
@@ -217,14 +243,16 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
         // It is important to include this code if we want to select this pin again.
         mapView.deselectAnnotation(view.annotation, animated: false)
         
+        // Looking for the pin in CoreData.
+        let pin = getPinFromAnnotation(view.annotation as! MKPointAnnotation)
+        
         // Action: Tapping on a pin.
         if operationModeAddDelete { // Operation mode: "Add"
-            selectedPin = getPinFromAnnotation(view.annotation as! MKPointAnnotation)
+            selectedPin = pin
             performSegue(withIdentifier: Constants.SegueIdentifiers.travelViewToPhotoAlbumSegue, sender: nil)
         } else { // Operation mode: "Delete"
             mapView.removeAnnotation(view.annotation!)
-            // TODO: Delete pin when it is selected if we are in "Removing mode" (CoreData)
-            // stack.context.delete(getPinFromAnnotation(view.annotation! as! MKPointAnnotation))
+            deleteInDB(pin: pin)
         }
     }
     
