@@ -17,8 +17,6 @@
 		CBBDF4C21E4648300093F778 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBDF4C11E4648300093F778 /* CoreDataStack.swift */; };
 		CBBDF4C51E46489C0093F778 /* virtualTouristModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CBBDF4C31E46489C0093F778 /* virtualTouristModel.xcdatamodeld */; };
 		CBBDF4C71E464B3C0093F778 /* PhotoAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBDF4C61E464B3C0093F778 /* PhotoAlbumViewController.swift */; };
-		CBEF31B61E47A9CF0031F4ED /* Map+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEF31B41E47A9CF0031F4ED /* Map+CoreDataClass.swift */; };
-		CBEF31B71E47A9CF0031F4ED /* Map+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEF31B51E47A9CF0031F4ED /* Map+CoreDataProperties.swift */; };
 		CBEF31BC1E47AA010031F4ED /* Photo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEF31B81E47AA010031F4ED /* Photo+CoreDataClass.swift */; };
 		CBEF31BD1E47AA010031F4ED /* Photo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEF31B91E47AA010031F4ED /* Photo+CoreDataProperties.swift */; };
 		CBEF31BE1E47AA010031F4ED /* Pin+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEF31BA1E47AA010031F4ED /* Pin+CoreDataClass.swift */; };
@@ -62,8 +60,6 @@
 		CBBDF4C11E4648300093F778 /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		CBBDF4C41E46489C0093F778 /* virtualTouristModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = virtualTouristModel.xcdatamodel; sourceTree = "<group>"; };
 		CBBDF4C61E464B3C0093F778 /* PhotoAlbumViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoAlbumViewController.swift; sourceTree = "<group>"; };
-		CBEF31B41E47A9CF0031F4ED /* Map+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Map+CoreDataClass.swift"; sourceTree = "<group>"; };
-		CBEF31B51E47A9CF0031F4ED /* Map+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Map+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		CBEF31B81E47AA010031F4ED /* Photo+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Photo+CoreDataClass.swift"; sourceTree = "<group>"; };
 		CBEF31B91E47AA010031F4ED /* Photo+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Photo+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		CBEF31BA1E47AA010031F4ED /* Pin+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Pin+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -153,8 +149,6 @@
 			isa = PBXGroup;
 			children = (
 				CBBDF4C11E4648300093F778 /* CoreDataStack.swift */,
-				CBEF31B41E47A9CF0031F4ED /* Map+CoreDataClass.swift */,
-				CBEF31B51E47A9CF0031F4ED /* Map+CoreDataProperties.swift */,
 				CBEF31B81E47AA010031F4ED /* Photo+CoreDataClass.swift */,
 				CBEF31B91E47AA010031F4ED /* Photo+CoreDataProperties.swift */,
 				CBEF31BA1E47AA010031F4ED /* Pin+CoreDataClass.swift */,
@@ -343,9 +337,7 @@
 				CBBDF4C21E4648300093F778 /* CoreDataStack.swift in Sources */,
 				CBEF31BF1E47AA010031F4ED /* Pin+CoreDataProperties.swift in Sources */,
 				CBEF31BC1E47AA010031F4ED /* Photo+CoreDataClass.swift in Sources */,
-				CBEF31B61E47A9CF0031F4ED /* Map+CoreDataClass.swift in Sources */,
 				CBBDF4911E46476A0093F778 /* TravelLocationMapViewController.swift in Sources */,
-				CBEF31B71E47A9CF0031F4ED /* Map+CoreDataProperties.swift in Sources */,
 				CBEF31BD1E47AA010031F4ED /* Photo+CoreDataProperties.swift in Sources */,
 				CBEF31C71E47D8B30031F4ED /* FlickrClient.swift in Sources */,
 				CBBDF4C71E464B3C0093F778 /* PhotoAlbumViewController.swift in Sources */,

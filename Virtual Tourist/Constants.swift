@@ -12,6 +12,10 @@ struct Constants {
         static let travelViewToPhotoAlbumSegue = "travelViewToPhotoAlbumSegue"
     }
     
+    struct MapInfo {
+        static let mapCenterLatitude = "mapCenterLat"
+        static let mapCenterLongitude = "mapCenterLon"
+    }
     struct Flickr {
         static let APIScheme = "https"
         static let APIHost = "api.flickr.com"

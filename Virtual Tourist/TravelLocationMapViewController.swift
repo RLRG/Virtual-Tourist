@@ -21,10 +21,17 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
     let stack = (UIApplication.shared.delegate as! AppDelegate).stack
     var selectedPin:Pin? = nil
     
+    var isFirstLoading: Bool = true
+    
+    // TODO: Add a loading spinner while the map is loading.
+    // TODO: Creating a new version of the model in order to remove the 'Map' entity. It is not needed because the data is stored in UserDefaults.
     
     // MARK: Initializers
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Setting the delegate of the mapView to this viewController
+        mapView.delegate = self
         
         // Configuring gesture recognizer to add a pin
         let gestureRecognizer_TapAndHold = UILongPressGestureRecognizer(target: self, action: #selector(TravelLocationMapViewController.addPinOnTheMap(_:)))
@@ -35,20 +42,61 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // Initializing values to be in "Add" operation mode by default.
+        // Initializing values to be in "Add" operation mode by default and to center the map appropriately
+        isFirstLoading = true
         tapPinsToDeleteView.isHidden = true
         operationModeAddDelete = true
         
         // Initializing UI
         performUIUpdatesOnMain {
+            // Load the map in the center and with the zoom stored.
+            self.loadMapInfoAndCenterMap()
             
-            // TODO: Load the map in the center and with the zoom stored in CoreData.
-            // Query the CoreData DB.
-            // mapView.setCenter(<#T##coordinate: CLLocationCoordinate2D##CLLocationCoordinate2D#>, animated: <#T##Bool#>)
-            
-            // Displaying the pins on the map
+            // Displaying the pins on the map.
             self.displayPinsOnTheMap()
         }
+    }
+    
+    
+    // MARK: Map Loading & Persistence
+    
+    func loadMapInfoAndCenterMap() {
+        
+        var centerCoordinate = CLLocationCoordinate2D()
+        
+        // latitude
+        if UserDefaults.standard.object(forKey: Constants.MapInfo.mapCenterLatitude) != nil {
+            print("Latitude already exists: \(UserDefaults.standard.double(forKey: Constants.MapInfo.mapCenterLatitude))")
+            centerCoordinate.latitude = UserDefaults.standard.double(forKey: Constants.MapInfo.mapCenterLatitude)
+        } else{
+            print("Creating the UserDefaults value for latitude")
+            UserDefaults.standard.set(mapView.centerCoordinate.latitude, forKey: Constants.MapInfo.mapCenterLatitude)
+        }
+        
+        // longitude
+        if UserDefaults.standard.object(forKey: Constants.MapInfo.mapCenterLongitude) != nil {
+            print("Longitude already exists: \(UserDefaults.standard.double(forKey: Constants.MapInfo.mapCenterLongitude))")
+            centerCoordinate.longitude = UserDefaults.standard.double(forKey: Constants.MapInfo.mapCenterLongitude)
+        } else{
+            print("Creating the UserDefaults value for longitude")
+            UserDefaults.standard.set(mapView.centerCoordinate.longitude, forKey: Constants.MapInfo.mapCenterLongitude)
+        }
+        
+        // TODO: Zoom. How do I get the zoom level of the map? Getting the span of the surrounding area displayed (MKCoordinateRegionMakeWithDistance, mapView.setRegion)
+        
+        UserDefaults.standard.synchronize()
+        mapView.setCenter(centerCoordinate, animated: true)
+        
+    }
+    
+    func persistMapInfo() {
+        let lat = mapView.centerCoordinate.latitude
+        let lon = mapView.centerCoordinate.longitude
+        print("Persisting map info. Lat:\(lat) , Lon:\(lon)")
+        UserDefaults.standard.set(lat, forKey: Constants.MapInfo.mapCenterLatitude)
+        UserDefaults.standard.set(lon, forKey: Constants.MapInfo.mapCenterLongitude)
+        // TODO: Zoom.
+        UserDefaults.standard.synchronize()
     }
 
     func displayPinsOnTheMap(){
@@ -106,13 +154,6 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
         }
     }
     
-    // TODO: Persist the map information: Center, zoom level...
-    func persistMapInfo() {
-        // mapView.centerCoordinate.latitude
-        // mapView.centerCoordinate.longitude
-        // TODO: How do I get the zoom level of the map?
-    }
-    
     // This action is used in order to switch between the two operation modes of the screen:
     // 1- Add pins / 2- Delete pins.
     @IBAction func editDoneButton(_ sender: Any) {
@@ -156,6 +197,15 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
         }
         
         return pinView
+    }
+    
+    // This function tells the delegate that the region displayed of the map has changed
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        if isFirstLoading {
+            isFirstLoading = false
+        } else {
+            persistMapInfo()
+        }
     }
     
     // This delegate method is implemented to respond to taps
