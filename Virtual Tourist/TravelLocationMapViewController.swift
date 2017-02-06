@@ -102,6 +102,7 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
 
             // Storing the pin data in CoreData DB
             _ = Pin(lat: newCoordinates.latitude, lon: newCoordinates.longitude, context: stack.context)
+            stack.save()
         }
     }
     
@@ -167,6 +168,8 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
             performSegue(withIdentifier: Constants.SegueIdentifiers.travelViewToPhotoAlbumSegue, sender: nil)
         } else { // Operation mode: "Delete"
             // TODO: Delete pin when it is selected if we are in "Removing mode".
+            mapView.removeAnnotation(view.annotation!)
+            stack.context.delete(getPinFromAnnotation(view.annotation! as! MKPointAnnotation))
         }
     }
     
