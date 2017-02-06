@@ -188,9 +188,6 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
         
         if pinView == nil {
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-            pinView!.canShowCallout = true
-            pinView!.pinTintColor = .red
-            pinView!.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
         }
         else {
             pinView!.annotation = annotation
@@ -211,24 +208,37 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
     // This delegate method is implemented to respond to taps
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         
+        // It is important to include this code if we want to select this pin again.
+        mapView.deselectAnnotation(view.annotation, animated: false)
+        
         // TODO: Fix the "Tap on a pin" functionality. It does not work !!
         // Action: Tapping on a pin.
         if operationModeAddDelete { // Operation mode: "Add"
             selectedPin = getPinFromAnnotation(view.annotation as! MKPointAnnotation)
             performSegue(withIdentifier: Constants.SegueIdentifiers.travelViewToPhotoAlbumSegue, sender: nil)
         } else { // Operation mode: "Delete"
-            // TODO: Delete pin when it is selected if we are in "Removing mode".
             mapView.removeAnnotation(view.annotation!)
-            stack.context.delete(getPinFromAnnotation(view.annotation! as! MKPointAnnotation))
+            // TODO: Delete pin when it is selected if we are in "Removing mode" (CoreData)
+            // stack.context.delete(getPinFromAnnotation(view.annotation! as! MKPointAnnotation))
         }
     }
     
     func getPinFromAnnotation (_ annotation: MKPointAnnotation) -> Pin {
-        let pin = Pin()
-        pin.latitude = annotation.coordinate.latitude
-        pin.longitude = annotation.coordinate.longitude
+        // TODO: Fetch request looking for the corresponding Pin. For now, we create a new pin object in CoreData.
+        let pin = Pin(lat: annotation.coordinate.latitude, lon: annotation.coordinate.longitude, context: stack.context)
         return pin
     }
+    
+    // It is called when the map is starting to load.
+    func mapViewWillStartLoadingMap(_ mapView: MKMapView) {
+        // TODO: Include the code to start and display a spinner.
+    }
+    
+    // It is called when the map has finished loading.
+    func mapViewDidFinishRenderingMap(_ mapView: MKMapView, fullyRendered: Bool) {
+        // TODO: Include the code to stop and hide a spinner.
+    }
+    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Constants.SegueIdentifiers.travelViewToPhotoAlbumSegue{
