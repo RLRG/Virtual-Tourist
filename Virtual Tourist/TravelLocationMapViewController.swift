@@ -16,6 +16,7 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var editDoneButton: UIBarButtonItem!
     @IBOutlet weak var tapPinsToDeleteView: UIView!
+    @IBOutlet weak var loadingSpinner: UIActivityIndicatorView!
     
     var operationModeAddDelete:Bool = true
     let stack = (UIApplication.shared.delegate as! AppDelegate).stack
@@ -95,7 +96,7 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
         print("Persisting map info. Lat:\(lat) , Lon:\(lon)")
         UserDefaults.standard.set(lat, forKey: Constants.MapInfo.mapCenterLatitude)
         UserDefaults.standard.set(lon, forKey: Constants.MapInfo.mapCenterLongitude)
-        // TODO: Zoom.
+        // TODO: Persist zoom.
         UserDefaults.standard.synchronize()
     }
 
@@ -205,13 +206,12 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
         }
     }
     
-    // This delegate method is implemented to respond to taps
+    // This delegate method is implemented to respond to taps on the pins.
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         
         // It is important to include this code if we want to select this pin again.
         mapView.deselectAnnotation(view.annotation, animated: false)
         
-        // TODO: Fix the "Tap on a pin" functionality. It does not work !!
         // Action: Tapping on a pin.
         if operationModeAddDelete { // Operation mode: "Add"
             selectedPin = getPinFromAnnotation(view.annotation as! MKPointAnnotation)
@@ -231,14 +231,16 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
     
     // It is called when the map is starting to load.
     func mapViewWillStartLoadingMap(_ mapView: MKMapView) {
-        // TODO: Include the code to start and display a spinner.
+        // Start and display a spinner.
+        loadingSpinner.startAnimating()
+        loadingSpinner.hidesWhenStopped = true
     }
     
     // It is called when the map has finished loading.
     func mapViewDidFinishRenderingMap(_ mapView: MKMapView, fullyRendered: Bool) {
-        // TODO: Include the code to stop and hide a spinner.
+        // Stop and hide a spinner.
+        loadingSpinner.stopAnimating()
     }
-    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Constants.SegueIdentifiers.travelViewToPhotoAlbumSegue{

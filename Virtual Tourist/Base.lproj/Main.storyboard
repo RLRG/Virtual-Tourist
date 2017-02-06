@@ -41,14 +41,20 @@
                                     <constraint firstItem="FSZ-q0-xWH" firstAttribute="centerX" secondItem="a4q-aR-O7Y" secondAttribute="centerX" id="sk2-fu-k70"/>
                                 </constraints>
                             </view>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="5du-Md-v8A">
+                                <rect key="frame" x="169" y="315" width="37" height="37"/>
+                                <color key="color" red="1" green="0.71476724229999999" blue="0.25476330019999999" alpha="1" colorSpace="calibratedRGB"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="GhC-ad-1HO" secondAttribute="bottom" id="4aW-8A-zsq"/>
                             <constraint firstItem="GhC-ad-1HO" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="8vp-pR-6Gn"/>
+                            <constraint firstItem="5du-Md-v8A" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="Fa9-U4-gJM"/>
                             <constraint firstAttribute="trailing" secondItem="a4q-aR-O7Y" secondAttribute="trailing" id="LHx-Y0-uQY"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="a4q-aR-O7Y" secondAttribute="bottom" id="MIv-a0-b9Y"/>
                             <constraint firstItem="a4q-aR-O7Y" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="cwP-t9-WC8"/>
+                            <constraint firstItem="5du-Md-v8A" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="gwS-E3-nY2"/>
                             <constraint firstItem="GhC-ad-1HO" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="h9q-it-BYb"/>
                             <constraint firstAttribute="trailing" secondItem="GhC-ad-1HO" secondAttribute="trailing" id="u3C-9a-LlP"/>
                         </constraints>
@@ -62,6 +68,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="editDoneButton" destination="dpl-AU-UYs" id="iAt-IE-2uj"/>
+                        <outlet property="loadingSpinner" destination="5du-Md-v8A" id="PGD-zk-bFD"/>
                         <outlet property="mapView" destination="GhC-ad-1HO" id="3Y7-n4-2Rc"/>
                         <outlet property="tapPinsToDeleteView" destination="a4q-aR-O7Y" id="1CE-Uw-Tnc"/>
                         <segue destination="2dy-bI-DtK" kind="show" identifier="travelViewToPhotoAlbumSegue" id="spD-xd-I2S"/>
