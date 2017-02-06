@@ -11,23 +11,23 @@ import MapKit
 
 class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
 
-    // MARK: Outlets & Properties
+    // MARK: - Initialization
     
+    // MARK: Outlets
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var editDoneButton: UIBarButtonItem!
     @IBOutlet weak var tapPinsToDeleteView: UIView!
     @IBOutlet weak var loadingSpinner: UIActivityIndicatorView!
     
+    // MARK: Properties
     var operationModeAddDelete:Bool = true
     let stack = (UIApplication.shared.delegate as! AppDelegate).stack
     var selectedPin:Pin? = nil
-    
     var isFirstLoading: Bool = true
     
-    // TODO: Add a loading spinner while the map is loading.
     // TODO: Creating a new version of the model in order to remove the 'Map' entity. It is not needed because the data is stored in UserDefaults.
     
-    // MARK: Initializers
+    // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -59,7 +59,7 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
     }
     
     
-    // MARK: Map Loading & Persistence
+    // MARK: - Map Loading & Persistence
     
     func loadMapInfoAndCenterMap() {
         
@@ -135,8 +135,14 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
         self.mapView.addAnnotations(annotations)
     }
     
+    func getPinFromAnnotation (_ annotation: MKPointAnnotation) -> Pin {
+        // TODO: Fetch request looking for the corresponding Pin. For now, we create a new pin object in CoreData.
+        let pin = Pin(lat: annotation.coordinate.latitude, lon: annotation.coordinate.longitude, context: stack.context)
+        return pin
+    }
     
-    // MARK: Actions
+    
+    // MARK: - Actions
     
     // Add the action to add a pin (Tap and hold) and store that pin in CoreData DB.
     func addPinOnTheMap(_ gestureRecognizer:UIGestureRecognizer){
@@ -173,7 +179,6 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
             }
         }
     }
-    
     
     
     // MARK: - MKMapViewDelegate
@@ -223,12 +228,6 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
         }
     }
     
-    func getPinFromAnnotation (_ annotation: MKPointAnnotation) -> Pin {
-        // TODO: Fetch request looking for the corresponding Pin. For now, we create a new pin object in CoreData.
-        let pin = Pin(lat: annotation.coordinate.latitude, lon: annotation.coordinate.longitude, context: stack.context)
-        return pin
-    }
-    
     // It is called when the map is starting to load.
     func mapViewWillStartLoadingMap(_ mapView: MKMapView) {
         // Start and display a spinner.
@@ -242,15 +241,15 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
         loadingSpinner.stopAnimating()
     }
     
+    
+    // MARK: - Auxiliary functions
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Constants.SegueIdentifiers.travelViewToPhotoAlbumSegue{
             let photoAlbumVC = segue.destination as! PhotoAlbumViewController
             photoAlbumVC.selectedPin = selectedPin
         }
     }
-    
-    
-    // MARK: Auxiliary functions
     
     // To present an error alert view
     func displayErrorAlertViewWithMessage (_ errorString: String) {
@@ -264,6 +263,4 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
         alertController.addAction(okAction)
         present(alertController, animated: true, completion:nil)
     }
-
 }
-
