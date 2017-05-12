@@ -27,6 +27,7 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
     var isFirstLoading: Bool = true
     
     // TODO: Creating a new version of the model in order to remove the 'Map' entity. It is not needed because the data is stored in UserDefaults.
+    // TODO: Apply the knowledge of the last lesson of the module "Core Data and Concurrency".
     
     // MARK: Lifecycle
     override func viewDidLoad() {

@@ -24,7 +24,8 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate {
         
         // TODO: Configure Flickr.
         // TODO: Create the network request to get the images when opening this new screen.
-        
+        // TODO: Center map with the corresponding values (take into account the zoom too).
+        // TODO: Fix the OK button to be displayed with the back icon.
         
     }
     
