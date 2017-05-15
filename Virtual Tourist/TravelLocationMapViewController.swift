@@ -152,7 +152,7 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
         // Fetch request looking for the corresponding Pin.
         var pins = [Pin]()
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Pin")
-        let pred = NSPredicate(format: "latitude = %@ and longitude = %@", argumentArray: [annotation.coordinate.latitude, annotation.coordinate.longitude])
+        let pred = NSPredicate(format: "latitude = %@ and longitude = %@", argumentArray: [Double(annotation.coordinate.latitude), Double(annotation.coordinate.longitude)])
         fetchRequest.predicate = pred
         do {
             let result = try stack.context.fetch(fetchRequest)
