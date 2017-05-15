@@ -21,6 +21,8 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate, NSFetchedR
     let stack = (UIApplication.shared.delegate as! AppDelegate).stack
     var numberOfPhotos = 0
     
+    var selectedPhotosToDelete = [IndexPath: Photo]()
+    
     lazy var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult> = {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
         fetchRequest.predicate = NSPredicate(format: "pin == %@", argumentArray: [self.selectedPin])
@@ -132,29 +134,25 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate, NSFetchedR
     
     // MARK: - Actions
     @IBAction func newCollectionButtonAction(_ sender: Any) {
-        print("Clearing the CoreData Database before requesting more images")
-        deleteAllPhotosForThisPin {
-            // Network request to get the images when new collection button is tapped.
-            print("Reloading the request.")
-            getImages()
+        
+        // Remove Selected Photos action
+        if (selectedPhotosToDelete.count > 0) {
+            deleteSelectedPhotos {
+                collectionView.reloadData()
+            }
         }
+        // Requesting a new collection
+        else {
+            print("Clearing the CoreData Database before requesting more images")
+            deleteAllPhotosForThisPin {
+                // Network request to get the images when new collection button is tapped.
+                print("Reloading the request.")
+                getImages()
+            }
+        }
+        
     }
     
-    func deleteAllPhotosForThisPin(_ completionHandler: () -> Void){
-        newCollectionButton.isEnabled = false
-        numberOfPhotos = 0
-        for photo in fetchedResultsController.fetchedObjects as![Photo]{
-            stack.context.delete(photo)
-        }
-        stack.save()
-        collectionView.reloadData()
-        completionHandler()
-        collectionView.reloadData()
-        // TODO: Check if we need the following line or not.
-        //newCollectionButton.isEnabled = true
-    }
-    
-
     // TODO: Select a photo (or several photos) and display the button "Remove Selected Pictures".
     // TODO: Remove selected pictures action. a) Remove them from the CoreData BD, b) Update UICollectionView.
     
@@ -193,6 +191,34 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate, NSFetchedR
         self.numberOfPhotos = (self.fetchedResultsController.fetchedObjects?.count)!
         self.collectionView.reloadData()
     }
+    
+    func deleteAllPhotosForThisPin(_ completionHandler: () -> Void){
+        newCollectionButton.isEnabled = false
+        numberOfPhotos = 0
+        for photo in fetchedResultsController.fetchedObjects as![Photo]{
+            stack.context.delete(photo)
+        }
+        stack.save()
+        collectionView.reloadData()
+        completionHandler()
+        collectionView.reloadData()
+        // TODO: Check if we need the following line or not.
+        //newCollectionButton.isEnabled = true
+    }
+    
+    func deleteSelectedPhotos(_ completionHandler: () -> Void){
+        
+        for photo in selectedPhotosToDelete as [IndexPath : Photo] {
+            stack.context.delete(photo.value) // CoreData
+            collectionView.deleteItems(at: [photo.key]) // CollectionView
+            self.numberOfPhotos -= 1
+        }
+        stack.save()
+        selectedPhotosToDelete.removeAll()
+
+        // TODO: Check if we need the following line or not.
+        //newCollectionButton.isEnabled = true
+    }
 }
 
 
@@ -212,7 +238,9 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
         if photo.localPath != nil {
             cell.activityIndicator.stopAnimating()
             cell.activityIndicator.isHidden = true
-            cell.image.image = UIImage(data: photo.imageData! as Data)
+            if let binaryData = photo.imageData {
+                cell.image.image = UIImage(data: binaryData as Data)
+            }
         }
         else{
             cell.activityIndicator.startAnimating()
@@ -227,22 +255,39 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
         return 1
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize{
-        let lineWidth: CGFloat = 10.0
-        let numberOfLines: CGFloat = 2.0
-        let numberOfCellsInOneLine: CGFloat = 3.0
-        let widthWithAdjustment = (view.frame.width) - (lineWidth * numberOfLines)
-        return CGSize(width: widthWithAdjustment/numberOfCellsInOneLine, height: widthWithAdjustment/numberOfCellsInOneLine)
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize{        
+        let collectionViewSize = collectionView.frame.size
+        return CGSize(width: collectionViewSize.width/3.5, height: collectionViewSize.height/4.0)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let photo = fetchedResultsController.object(at: indexPath) as! Photo
-        collectionView.deselectItem(at: indexPath, animated: true)
-        stack.context.delete(photo)
-        numberOfPhotos -= 1
-        print("Deleting indexPath: section: \(indexPath.section), item: \(indexPath.item)")
-        collectionView.deleteItems(at: [indexPath])
-        stack.save()
+        selectedPhotosToDelete[indexPath] = photo
+        //collectionView.deselectItem(at: indexPath, animated: true) // TODO: Check if this line is needed or not.
+        
+        if (selectedPhotosToDelete.count > 0 && self.newCollectionButton.titleLabel?.text != "Remove Selected Photos") {
+            DispatchQueue.main.async {
+                self.newCollectionButton.titleLabel?.text = "Remove Selected Photos"
+            }
+        } else if (selectedPhotosToDelete.count == 0 && self.newCollectionButton.titleLabel?.text != "New Collection") {
+            DispatchQueue.main.async {
+                self.newCollectionButton.titleLabel?.text = "New Collection"
+            }
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        print("Deselecting the photo at index\(indexPath)")
+        selectedPhotosToDelete.removeValue(forKey: indexPath)
+        if (selectedPhotosToDelete.count > 0 && self.newCollectionButton.titleLabel?.text != "Remove Selected Photos") {
+            DispatchQueue.main.async {
+                self.newCollectionButton.titleLabel?.text = "Remove Selected Photos"
+            }
+        } else if (selectedPhotosToDelete.count == 0 && self.newCollectionButton.titleLabel?.text != "New Collection") {
+            DispatchQueue.main.async {
+                self.newCollectionButton.titleLabel?.text = "New Collection"
+            }
+        }
     }
 }
 

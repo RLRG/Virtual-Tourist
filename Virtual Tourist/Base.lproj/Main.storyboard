@@ -118,7 +118,7 @@
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9O5-LG-Wxj">
                                                     <rect key="frame" x="2" y="2" width="46" height="46"/>
                                                 </imageView>
-                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Y1K-b1-ahP">
+                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Y1K-b1-ahP">
                                                     <rect key="frame" x="15" y="15" width="20" height="20"/>
                                                     <color key="color" red="1" green="0.71476724229999999" blue="0.25476330019999999" alpha="1" colorSpace="calibratedRGB"/>
                                                 </activityIndicatorView>
@@ -139,7 +139,7 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kto-rW-849">
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kto-rW-849">
                                 <rect key="frame" x="135" y="629" width="104" height="30"/>
                                 <state key="normal" title="New Collection"/>
                                 <connections>
