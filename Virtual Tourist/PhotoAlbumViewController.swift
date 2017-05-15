@@ -43,7 +43,7 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate, NSFetchedR
         self.collectionView.dataSource = self
         
         // Setting the OK navigation item
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem (title: "OK", style: UIBarButtonItemStyle.plain, target: self, action: #selector(PhotoAlbumViewController.backButton))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem (title: "Back", style: UIBarButtonItemStyle.plain, target: self, action: #selector(PhotoAlbumViewController.backButton))
         
         // Network request to get the images when opening this new screen.
         newCollectionButton.isEnabled = false
@@ -66,26 +66,38 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate, NSFetchedR
         // Getting the images of the pin
         // TODO: Distinguish between the new pins and the ones that already have data. When it's new, we'll have to fill the CoreData DB and when the CoreData DB has data, we'll have to display the images stored there.
         getImagesForPin()
-        
-        // TODO: Fix the OK button to be displayed with the back icon.
     }
     
     func centerMap(){
+        ///////// COORDINATES //////////
         let lat = CLLocationDegrees(selectedPin.latitude)
         let long = CLLocationDegrees(selectedPin.longitude)
         let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
         let annotation = MKPointAnnotation()
         annotation.coordinate = coordinate
-        annotation.title = "Title test" // TODO: Set the title of the pin.
-        annotation.subtitle = "Subtitle test" // TODO: Set the subtitle of the pin.
         mapViewPhotoAlbum.addAnnotation(annotation)
+        
+        ///////// ZOOM LEVEL //////////
+        var span = MKCoordinateSpan()
+        // latitudeDelta
+        if UserDefaults.standard.object(forKey: Constants.MapInfo.mapZoomLatitude) != nil {
+            span.latitudeDelta = UserDefaults.standard.double(forKey: Constants.MapInfo.mapZoomLatitude)
+        } else{
+            print("Error: LatitudeDelta must exist at this point.")
+        }
+        // longitudeDelta
+        if UserDefaults.standard.object(forKey: Constants.MapInfo.mapZoomLongitude) != nil {
+            span.longitudeDelta = UserDefaults.standard.double(forKey: Constants.MapInfo.mapZoomLongitude)
+        } else{
+            print("Error: LongitudeDelta must exist at this point.")
+        }
+        
+        ///////// SET REGION //////////
+        let region = MKCoordinateRegion(center: coordinate, span: span)
+        mapViewPhotoAlbum.setRegion(region, animated: false)
         mapViewPhotoAlbum.isUserInteractionEnabled = false
         mapViewPhotoAlbum.isScrollEnabled = false
         mapViewPhotoAlbum.isZoomEnabled = false
-        
-        let span = MKCoordinateSpan(latitudeDelta: mapViewPhotoAlbum.region.span.latitudeDelta / 2, longitudeDelta: mapViewPhotoAlbum.region.span.latitudeDelta  / 2)
-        let region = MKCoordinateRegion(center: coordinate, span: span)
-        mapViewPhotoAlbum.setRegion(region, animated: false)
     }
     
     // MARK: - Navigation
@@ -119,15 +131,19 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate, NSFetchedR
                 
                 DispatchQueue.main.sync {
                     for photo in photosArray{
-                        let photoURLString = photo["url_m"] as! String
+                        let photoURLString = photo[Constants.FlickrResponseKeys.MediumURL] as! String
+                        let photoTitleString = photo[Constants.FlickrResponseKeys.Title] as! String
                         print(photoURLString)
                         // Creating an instance of a Photo - CoreData object.
-                        _ = Photo(title: "PHOTO TITLE", url: photoURLString, localPath: "", imageBinaryData: NSData(), associatedPin: self.selectedPin, context: self.stack.context) // TODO: Title of the photo, localPath?, imageBinaryData?
+                        _ = Photo(title: photoTitleString, url: photoURLString, localPath: "", imageBinaryData: NSData(), associatedPin: self.selectedPin, context: self.stack.context)
                     }
                     // Saving CoreData DB status.
                     self.stack.save()
                     self.newCollectionButton.isEnabled = true
                 }
+             
+                // Updating UICollectionView.
+                self.collectionView.reloadData()
             }
         }
     }
@@ -137,7 +153,9 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate, NSFetchedR
         
         // Remove Selected Photos action
         if (selectedPhotosToDelete.count > 0) {
+            // a) Remove them from the CoreData BD.
             deleteSelectedPhotos {
+                // b) Update UICollectionView.
                 collectionView.reloadData()
             }
         }
@@ -152,12 +170,8 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate, NSFetchedR
         }
         
     }
-    
-    // TODO: Select a photo (or several photos) and display the button "Remove Selected Pictures".
-    // TODO: Remove selected pictures action. a) Remove them from the CoreData BD, b) Update UICollectionView.
-    
+
     // MARK: - CoreData
-    
     func getImagesForPin(){
         numberOfPhotos = (fetchedResultsController.fetchedObjects?.count)!
         for photo in fetchedResultsController.fetchedObjects as! [Photo]{
@@ -201,23 +215,17 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate, NSFetchedR
         stack.save()
         collectionView.reloadData()
         completionHandler()
-        collectionView.reloadData()
-        // TODO: Check if we need the following line or not.
-        //newCollectionButton.isEnabled = true
     }
     
     func deleteSelectedPhotos(_ completionHandler: () -> Void){
         
         for photo in selectedPhotosToDelete as [IndexPath : Photo] {
             stack.context.delete(photo.value) // CoreData
-            collectionView.deleteItems(at: [photo.key]) // CollectionView
+            ///////////////collectionView.deleteItems(at: [photo.key]) // CollectionView
             self.numberOfPhotos -= 1
         }
         stack.save()
         selectedPhotosToDelete.removeAll()
-
-        // TODO: Check if we need the following line or not.
-        //newCollectionButton.isEnabled = true
     }
 }
 

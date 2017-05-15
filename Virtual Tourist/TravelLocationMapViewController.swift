@@ -94,7 +94,7 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
             span.latitudeDelta = UserDefaults.standard.double(forKey: Constants.MapInfo.mapZoomLatitude)
         } else{
             print("Creating the UserDefaults value for latitudeDelta")
-            UserDefaults.standard.set(mapView.centerCoordinate.latitude, forKey: Constants.MapInfo.mapZoomLatitude)
+            UserDefaults.standard.set(mapView.region.span.latitudeDelta, forKey: Constants.MapInfo.mapZoomLatitude)
         }
         
         // longitudeDelta
@@ -103,7 +103,7 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
             span.longitudeDelta = UserDefaults.standard.double(forKey: Constants.MapInfo.mapZoomLongitude)
         } else{
             print("Creating the UserDefaults value for longitudeDelta")
-            UserDefaults.standard.set(mapView.centerCoordinate.longitude, forKey: Constants.MapInfo.mapZoomLongitude)
+            UserDefaults.standard.set(mapView.region.span.longitudeDelta, forKey: Constants.MapInfo.mapZoomLongitude)
         }
         
         UserDefaults.standard.synchronize()
@@ -149,8 +149,6 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
             // Here we create the annotation and set its coordinate, title, and subtitle properties
             let annotation = MKPointAnnotation()
             annotation.coordinate = coordinate
-            annotation.title = "Title test" // TODO: Set the title of the pin.
-            annotation.subtitle = "Subtitle test" // TODO: Set the subtitle of the pin.
             
             // Finally we place the annotation in an array of annotations.
             annotations.append(annotation)

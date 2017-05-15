@@ -97,9 +97,8 @@
                                     <constraint firstAttribute="height" constant="160" id="puI-Ne-udn"/>
                                 </constraints>
                             </mapView>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="N2s-l3-PX2">
-                                <rect key="frame" x="0.0" y="232" width="375" height="427"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="N2s-l3-PX2">
+                                <rect key="frame" x="0.0" y="232" width="375" height="389"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="SB4-42-Nm0">
                                     <size key="itemSize" width="50" height="50"/>
@@ -149,8 +148,12 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="N2s-l3-PX2" firstAttribute="top" secondItem="yJb-hp-78o" secondAttribute="bottom" constant="8" id="Fuq-pE-AGM"/>
+                            <constraint firstAttribute="trailing" secondItem="N2s-l3-PX2" secondAttribute="trailing" id="KZF-4u-UHM"/>
                             <constraint firstItem="yJb-hp-78o" firstAttribute="top" secondItem="ySq-9y-Gk0" secondAttribute="bottom" id="LKB-ON-8YL"/>
+                            <constraint firstItem="kto-rW-849" firstAttribute="top" secondItem="N2s-l3-PX2" secondAttribute="bottom" constant="8" id="Ss8-SQ-q7J"/>
                             <constraint firstAttribute="trailing" secondItem="yJb-hp-78o" secondAttribute="trailing" id="TMe-XW-UEt"/>
+                            <constraint firstItem="N2s-l3-PX2" firstAttribute="leading" secondItem="Omt-sP-oqI" secondAttribute="leading" id="U8I-So-hK8"/>
                             <constraint firstItem="yJb-hp-78o" firstAttribute="leading" secondItem="Omt-sP-oqI" secondAttribute="leading" id="YsK-AJ-tnS"/>
                             <constraint firstItem="kto-rW-849" firstAttribute="centerX" secondItem="Omt-sP-oqI" secondAttribute="centerX" id="bhb-or-SBU"/>
                             <constraint firstItem="kto-rW-849" firstAttribute="trailing" secondItem="Omt-sP-oqI" secondAttribute="trailingMargin" id="dIc-7z-m4L"/>
