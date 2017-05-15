@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CB0BC5931EC91DC8007913D7 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0BC5921EC91DC8007913D7 /* CollectionViewCell.swift */; };
 		CBBDF48F1E46476A0093F778 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBDF48E1E46476A0093F778 /* AppDelegate.swift */; };
 		CBBDF4911E46476A0093F778 /* TravelLocationMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBDF4901E46476A0093F778 /* TravelLocationMapViewController.swift */; };
 		CBBDF4941E46476A0093F778 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CBBDF4921E46476A0093F778 /* Main.storyboard */; };
@@ -44,6 +45,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CB0BC58F1EC91882007913D7 /* virtualTouristModel 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "virtualTouristModel 2.xcdatamodel"; sourceTree = "<group>"; };
+		CB0BC5921EC91DC8007913D7 /* CollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
+		CB0BC5941EC9223F007913D7 /* virtualTouristModel 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "virtualTouristModel 3.xcdatamodel"; sourceTree = "<group>"; };
 		CBBDF48B1E46476A0093F778 /* Virtual Tourist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Virtual Tourist.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBBDF48E1E46476A0093F778 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CBBDF4901E46476A0093F778 /* TravelLocationMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelLocationMapViewController.swift; sourceTree = "<group>"; };
@@ -164,6 +168,7 @@
 				CBBDF4921E46476A0093F778 /* Main.storyboard */,
 				CBBDF4951E46476A0093F778 /* Assets.xcassets */,
 				CBBDF4971E46476A0093F778 /* LaunchScreen.storyboard */,
+				CB0BC5921EC91DC8007913D7 /* CollectionViewCell.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -340,6 +345,7 @@
 				CBBDF4911E46476A0093F778 /* TravelLocationMapViewController.swift in Sources */,
 				CBEF31BD1E47AA010031F4ED /* Photo+CoreDataProperties.swift in Sources */,
 				CBEF31C71E47D8B30031F4ED /* FlickrClient.swift in Sources */,
+				CB0BC5931EC91DC8007913D7 /* CollectionViewCell.swift in Sources */,
 				CBBDF4C71E464B3C0093F778 /* PhotoAlbumViewController.swift in Sources */,
 				CBBDF48F1E46476A0093F778 /* AppDelegate.swift in Sources */,
 				CBEF31C11E47B88B0031F4ED /* Constants.swift in Sources */,
@@ -438,7 +444,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -482,7 +488,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -620,9 +626,11 @@
 		CBBDF4C31E46489C0093F778 /* virtualTouristModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				CB0BC5941EC9223F007913D7 /* virtualTouristModel 3.xcdatamodel */,
+				CB0BC58F1EC91882007913D7 /* virtualTouristModel 2.xcdatamodel */,
 				CBBDF4C41E46489C0093F778 /* virtualTouristModel.xcdatamodel */,
 			);
-			currentVersion = CBBDF4C41E46489C0093F778 /* virtualTouristModel.xcdatamodel */;
+			currentVersion = CB0BC5941EC9223F007913D7 /* virtualTouristModel 3.xcdatamodel */;
 			path = virtualTouristModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

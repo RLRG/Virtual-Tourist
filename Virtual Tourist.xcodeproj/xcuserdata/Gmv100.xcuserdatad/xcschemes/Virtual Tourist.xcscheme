@@ -81,6 +81,16 @@
             ReferencedContainer = "container:Virtual Tourist.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <CommandLineArguments>
+         <CommandLineArgument
+            argument = "-com.apple.CoreData.SQLDebug 3&#10;down vote&#10;accepted&#10;&#9;&#10;&#10;Open &quot;Product -&gt; Scheme -&gt; Edit Scheme...&quot; in Xcode and add to &quot;Arguments Passed on Launch&quot;:&#10;&#10;down vote&#10;accepted&#10;&#9;&#10;&#10;Open &quot;Product -&gt; Scheme -&gt; Edit Scheme...&quot; in Xcode and add to &quot;Arguments Passed on Launch&quot;:&#10;&#10;-com.apple.CoreData.SQLDebug&#10;down vote&#10;accepted&#10;&#9;&#10;&#10;Open &quot;Product -&gt; Scheme -&gt; Edit Scheme...&quot; in Xcode and add to &quot;Arguments Passed on Launch&quot;:&#10;&#10;-com.apple.CoreData.SQLDebug"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-com.apple.CoreData.Logging.stderr 1 "
+            isEnabled = "YES">
+         </CommandLineArgument>
+      </CommandLineArguments>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
