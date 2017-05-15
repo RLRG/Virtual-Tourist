@@ -15,6 +15,8 @@ struct Constants {
     struct MapInfo {
         static let mapCenterLatitude = "mapCenterLat"
         static let mapCenterLongitude = "mapCenterLon"
+        static let mapZoomLatitude = "mapZoomLat"
+        static let mapZoomLongitude = "mapZoomLon"
     }
     struct Flickr {
         static let APIScheme = "https"

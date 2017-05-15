@@ -26,7 +26,6 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
     var selectedPin:Pin? = nil
     var isFirstLoading: Bool = true
     
-    // TODO: Creating a new version of the model in order to remove the 'Map' entity. It is not needed because the data is stored in UserDefaults.
     // TODO: Apply the knowledge of the last lesson of the module "Core Data and Concurrency".
     
     // MARK: Lifecycle
@@ -65,6 +64,7 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
     
     func loadMapInfoAndCenterMap() {
         
+        ///////// COORDINATES //////////
         var centerCoordinate = CLLocationCoordinate2D()
         
         // latitude
@@ -85,20 +85,44 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
             UserDefaults.standard.set(mapView.centerCoordinate.longitude, forKey: Constants.MapInfo.mapCenterLongitude)
         }
         
-        // TODO: Zoom. How do I get the zoom level of the map? Getting the span of the surrounding area displayed (MKCoordinateRegionMakeWithDistance, mapView.setRegion)
+        ///////// ZOOM LEVEL //////////
+        var span = MKCoordinateSpan()
+        
+        // latitudeDelta
+        if UserDefaults.standard.object(forKey: Constants.MapInfo.mapZoomLatitude) != nil {
+            print("LatitudeDelta already exists: \(UserDefaults.standard.double(forKey: Constants.MapInfo.mapZoomLatitude))")
+            span.latitudeDelta = UserDefaults.standard.double(forKey: Constants.MapInfo.mapZoomLatitude)
+        } else{
+            print("Creating the UserDefaults value for latitudeDelta")
+            UserDefaults.standard.set(mapView.centerCoordinate.latitude, forKey: Constants.MapInfo.mapZoomLatitude)
+        }
+        
+        // longitudeDelta
+        if UserDefaults.standard.object(forKey: Constants.MapInfo.mapZoomLongitude) != nil {
+            print("LongitudeDelta already exists: \(UserDefaults.standard.double(forKey: Constants.MapInfo.mapZoomLongitude))")
+            span.longitudeDelta = UserDefaults.standard.double(forKey: Constants.MapInfo.mapZoomLongitude)
+        } else{
+            print("Creating the UserDefaults value for longitudeDelta")
+            UserDefaults.standard.set(mapView.centerCoordinate.longitude, forKey: Constants.MapInfo.mapZoomLongitude)
+        }
         
         UserDefaults.standard.synchronize()
-        mapView.setCenter(centerCoordinate, animated: true)
         
+        ///////// SET REGION //////////
+        let region = MKCoordinateRegion(center: centerCoordinate, span: span)
+        mapView.setRegion(region, animated: true)
     }
     
     func persistMapInfo() {
         let lat = mapView.centerCoordinate.latitude
         let lon = mapView.centerCoordinate.longitude
-        print("Persisting map info. Lat:\(lat) , Lon:\(lon)")
+        let spanLat = mapView.region.span.latitudeDelta
+        let spanLon = mapView.region.span.longitudeDelta
+        print("Persisting map info. Lat:\(lat) , Lon:\(lon) , latDelta:\(spanLat) , lonDelta:\(spanLon)")
         UserDefaults.standard.set(lat, forKey: Constants.MapInfo.mapCenterLatitude)
         UserDefaults.standard.set(lon, forKey: Constants.MapInfo.mapCenterLongitude)
-        // TODO: Persist zoom.
+        UserDefaults.standard.set(spanLat, forKey: Constants.MapInfo.mapZoomLatitude)
+        UserDefaults.standard.set(spanLon, forKey: Constants.MapInfo.mapZoomLongitude)
         UserDefaults.standard.synchronize()
     }
 
