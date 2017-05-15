@@ -20,6 +20,7 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate, NSFetchedR
     var selectedPin:Pin!
     let stack = (UIApplication.shared.delegate as! AppDelegate).stack
     var numberOfPhotos = 0
+    var firstTimeViewDidLayoutSubviewsIsCalled = true
     
     var selectedPhotosToDelete = [IndexPath: Photo]()
     
@@ -45,11 +46,8 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate, NSFetchedR
         // Setting the OK navigation item
         self.navigationItem.leftBarButtonItem = UIBarButtonItem (title: "Back", style: UIBarButtonItemStyle.plain, target: self, action: #selector(PhotoAlbumViewController.backButton))
         
-        // Network request to get the images when opening this new screen.
-        newCollectionButton.isEnabled = false
-        getImages()
-        
-        // TODO: Distinguish between the new pins and the ones that already have data. When it's new, we'll have to fill the CoreData DB and when the CoreData DB has data, we'll have to display the images stored there.
+        // Flag
+        firstTimeViewDidLayoutSubviewsIsCalled = true
     }
     
     override func viewDidLayoutSubviews() {
@@ -60,12 +58,25 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate, NSFetchedR
             error = error1
             print(error!)
         }
+        
+        // Updating the number of items.
+        numberOfPhotos = (fetchedResultsController.fetchedObjects?.count)!
+        
         // Center map with the corresponding values (taking into account the zoom too).
         centerMap()
         
         // Getting the images of the pin
         // TODO: Distinguish between the new pins and the ones that already have data. When it's new, we'll have to fill the CoreData DB and when the CoreData DB has data, we'll have to display the images stored there.
-        getImagesForPin()
+        if (firstTimeViewDidLayoutSubviewsIsCalled) {
+            firstTimeViewDidLayoutSubviewsIsCalled = false
+            if (numberOfPhotos == 0) {
+                // Network request to get the images when opening this new screen.
+                newCollectionButton.isEnabled = false
+                getImagesURLs()
+            } else {
+                newCollectionButton.isEnabled = true
+            }
+        }
     }
     
     func centerMap(){
@@ -107,8 +118,33 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate, NSFetchedR
         }
     }
     
-    // MARK: - Networking
-    func getImages() {
+    // MARK: - Actions
+    @IBAction func newCollectionButtonAction(_ sender: Any) {
+        
+        // Remove Selected Photos action
+        if (selectedPhotosToDelete.count > 0) {
+            // a) Remove them from the CoreData BD.
+            deleteSelectedPhotos {
+                // b) Update UICollectionView.
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                }
+            }
+        }
+            // Requesting a new collection
+        else {
+            print("Clearing the CoreData Database before requesting more images")
+            deleteAllPhotosForThisPin {
+                // Network request to get the images when new collection button is tapped.
+                print("Reloading the request.")
+                getImagesURLs()
+            }
+        }
+        
+    }
+    
+    // MARK: - Networking & CoreData
+    func getImagesURLs() {
         _ = FlickrClient.shared.searchImagesByLatLon(lat: selectedPin.latitude, lon: selectedPin.longitude) { (success, message, data) in
             if success{
                 /* GUARD: Is "photos" key in our result? */
@@ -137,45 +173,36 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate, NSFetchedR
                         // Creating an instance of a Photo - CoreData object.
                         _ = Photo(title: photoTitleString, url: photoURLString, localPath: "", imageBinaryData: NSData(), associatedPin: self.selectedPin, context: self.stack.context)
                     }
+                    
                     // Saving CoreData DB status.
                     self.stack.save()
                     self.newCollectionButton.isEnabled = true
+                    
+                    // Requesting the image binary data.
+                    self.getImagesForPin()
                 }
-             
-                // Updating UICollectionView.
-                self.collectionView.reloadData()
             }
         }
     }
     
-    // MARK: - Actions
-    @IBAction func newCollectionButtonAction(_ sender: Any) {
-        
-        // Remove Selected Photos action
-        if (selectedPhotosToDelete.count > 0) {
-            // a) Remove them from the CoreData BD.
-            deleteSelectedPhotos {
-                // b) Update UICollectionView.
-                collectionView.reloadData()
-            }
-        }
-        // Requesting a new collection
-        else {
-            print("Clearing the CoreData Database before requesting more images")
-            deleteAllPhotosForThisPin {
-                // Network request to get the images when new collection button is tapped.
-                print("Reloading the request.")
-                getImages()
-            }
-        }
-        
-    }
-
-    // MARK: - CoreData
     func getImagesForPin(){
+        
+        var error: NSError?
+        do {
+            try fetchedResultsController.performFetch()
+        } catch let error1 as NSError {
+            error = error1
+            print(error!)
+        }
         numberOfPhotos = (fetchedResultsController.fetchedObjects?.count)!
+        
+        // Updating collectionView (with this reload, what we get is to display the spinners loading until the image is get from the networking request).
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
+        
         for photo in fetchedResultsController.fetchedObjects as! [Photo]{
-            if photo.url != nil{
+            if photo.url != nil {
                 _ = FlickrClient.shared.getImage(selectedPhoto: photo, completionHandler: {(success, message, data) in
                     if success{
                         if let _ = UIImage(data: data as! Data) {
@@ -198,12 +225,13 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate, NSFetchedR
                     else{
                         //TODO: Handle error
                     }
+                    
+                    DispatchQueue.main.async {
+                        self.collectionView.reloadData()
+                    }
                 })
             }
         }
-        // TODO: Doing it with each photo ? Or better when all the photos finish?
-        self.numberOfPhotos = (self.fetchedResultsController.fetchedObjects?.count)!
-        self.collectionView.reloadData()
     }
     
     func deleteAllPhotosForThisPin(_ completionHandler: () -> Void){
@@ -213,7 +241,11 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate, NSFetchedR
             stack.context.delete(photo)
         }
         stack.save()
-        collectionView.reloadData()
+        
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
+        
         completionHandler()
     }
     
@@ -243,7 +275,7 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionViewCell", for: indexPath) as! CollectionViewCell
         let photo = fetchedResultsController.object(at: indexPath) as! Photo
         
-        if photo.localPath != nil {
+        if photo.localPath != "" {
             cell.activityIndicator.stopAnimating()
             cell.activityIndicator.isHidden = true
             if let binaryData = photo.imageData {
