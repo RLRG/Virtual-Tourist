@@ -149,23 +149,8 @@ class FlickrClient {
                 return
             }
             
-            // parse the data
-            let parsedResult: AnyObject
-            do {
-                parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as AnyObject
-            } catch {
-                displayError("Could not parse the data as JSON: '\(data)'")
-                return
-            }
-            
-            /* GUARD: Did Flickr return an error (stat != ok)? */
-            guard let stat = parsedResult[Constants.FlickrResponseKeys.Status] as? String, stat == Constants.FlickrResponseValues.OKStatus else {
-                displayError("Flickr API returned an error. See error code and message in \(parsedResult)")
-                return
-            }
-            
             // TODO: Manage all the cases with the completionHandler.
-            completionHandler(true, nil, parsedResult)
+            completionHandler(true, nil, data as AnyObject)
         }
         
         // start the task!

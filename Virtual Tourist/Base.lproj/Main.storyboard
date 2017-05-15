@@ -132,6 +132,10 @@
                                             <constraint firstItem="9O5-LG-Wxj" firstAttribute="centerX" secondItem="7Rp-9D-g0E" secondAttribute="centerX" id="l2Y-87-ODQ"/>
                                             <constraint firstItem="Y1K-b1-ahP" firstAttribute="centerX" secondItem="9O5-LG-Wxj" secondAttribute="centerX" id="s4e-an-4cy"/>
                                         </constraints>
+                                        <connections>
+                                            <outlet property="activityIndicator" destination="Y1K-b1-ahP" id="bXK-WA-0zi"/>
+                                            <outlet property="image" destination="9O5-LG-Wxj" id="MFq-8J-aep"/>
+                                        </connections>
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
