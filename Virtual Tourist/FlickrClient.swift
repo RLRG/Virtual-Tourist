@@ -24,7 +24,9 @@ class FlickrClient {
                 Constants.FlickrParameterKeys.SafeSearch: Constants.FlickrParameterValues.UseSafeSearch,
                 Constants.FlickrParameterKeys.Extras: Constants.FlickrParameterValues.MediumURL,
                 Constants.FlickrParameterKeys.Format: Constants.FlickrParameterValues.ResponseFormat,
-                Constants.FlickrParameterKeys.NoJSONCallback: Constants.FlickrParameterValues.DisableJSONCallback
+                Constants.FlickrParameterKeys.NoJSONCallback: Constants.FlickrParameterValues.DisableJSONCallback,
+                Constants.FlickrParameterKeys.Sort: randomSortValue(),
+                Constants.FlickrParameterKeys.PerPage: Constants.FlickrParameterValues.PhotosPerPage
             ]
             _ = searchForImages(methodParameters as [String:AnyObject]) { (data, error) in
                 if error != nil {
@@ -40,6 +42,12 @@ class FlickrClient {
             // TODO: Manage error.
             // photoTitleLabel.text = "Lat should be [-90, 90].\nLon should be [-180, 180]."
         }
+    }
+    
+    func randomSortValue() -> String{
+        let sortValues = ["date-posted-desc", "date-posted-asc", "date-taken-desc", "date-taken-asc", "interstingness-desc", "interestingness-asc" , "relevance"]
+        
+        return sortValues[Int(arc4random_uniform(UInt32(sortValues.count)))]
     }
 
     private func searchForImages(_ methodParameters: [String: AnyObject], completionHandler: @escaping(_ data: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {

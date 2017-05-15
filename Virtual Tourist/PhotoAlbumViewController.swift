@@ -12,9 +12,10 @@ import CoreData
 
 class PhotoAlbumViewController : UIViewController, MKMapViewDelegate, NSFetchedResultsControllerDelegate {
     
-    // MARK - Outlets & Properties
+    // MARK: - Outlets & Properties
     @IBOutlet weak var mapViewPhotoAlbum: MKMapView!
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var newCollectionButton: UIButton!
     
     var selectedPin:Pin!
     let stack = (UIApplication.shared.delegate as! AppDelegate).stack
@@ -31,7 +32,7 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate, NSFetchedR
         return fetchedResultsController
     }()
     
-    // MARK - Initializers
+    // MARK: - Initializers
     override func viewDidLoad() {
         super.viewDidLoad()
     
@@ -43,6 +44,7 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate, NSFetchedR
         self.navigationItem.leftBarButtonItem = UIBarButtonItem (title: "OK", style: UIBarButtonItemStyle.plain, target: self, action: #selector(PhotoAlbumViewController.backButton))
         
         // Network request to get the images when opening this new screen.
+        newCollectionButton.isEnabled = false
         getImages()
         
         // TODO: Distinguish between the new pins and the ones that already have data. When it's new, we'll have to fill the CoreData DB and when the CoreData DB has data, we'll have to display the images stored there.
@@ -60,6 +62,7 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate, NSFetchedR
         centerMap()
         
         // Getting the images of the pin
+        // TODO: Distinguish between the new pins and the ones that already have data. When it's new, we'll have to fill the CoreData DB and when the CoreData DB has data, we'll have to display the images stored there.
         getImagesForPin()
         
         // TODO: Fix the OK button to be displayed with the back icon.
@@ -83,14 +86,14 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate, NSFetchedR
         mapViewPhotoAlbum.setRegion(region, animated: false)
     }
     
-    // MARK: Navigation
+    // MARK: - Navigation
     func backButton (){
         if let navigationController = self.navigationController {
             navigationController.popViewController(animated: true)
         }
     }
     
-    // MARK - Networking
+    // MARK: - Networking
     func getImages() {
         _ = FlickrClient.shared.searchImagesByLatLon(lat: selectedPin.latitude, lon: selectedPin.longitude) { (success, message, data) in
             if success{
@@ -102,22 +105,6 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate, NSFetchedR
                     return
                 }
                 print("photosDictionary: \(photosDictionary)")
-                
-                /* GUARD: Is "pages" key in the photosDictionary? */
-                guard let totalPages = photosDictionary[Constants.FlickrResponseKeys.Pages] as? Int else {
-                    // TODO: Manage ERROR
-                    //displayError("Cannot find key '\(Constants.FlickrResponseKeys.Pages)' in \(photosDictionary)")
-                    print("ERROR")
-                    return
-                }
-                
-                // TODO: Manage response of the Web Service.
-                print("Total pages: \(totalPages)")
-                print("TODO: Manage response of the Web Service.")
-                // TODO: pick a random page!
-                //let pageLimit = min(totalPages, 40)
-                //let randomPage = Int(arc4random_uniform(UInt32(pageLimit))) + 1
-                //self.displayImageFromFlickrBySearch(methodParameters, withPageNumber: randomPage)
                 
                 /* GUARD: XXXXXXXXXXXXXXXXXXXXXXXX? */
                 guard let photosArray = photosDictionary[Constants.FlickrResponseKeys.Photo] as? [[String:AnyObject]] else {
@@ -132,28 +119,46 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate, NSFetchedR
                     for photo in photosArray{
                         let photoURLString = photo["url_m"] as! String
                         print(photoURLString)
-                        // TODO: Creating an instance of a Photo - CoreData object.
+                        // Creating an instance of a Photo - CoreData object.
                         _ = Photo(title: "PHOTO TITLE", url: photoURLString, localPath: "", imageBinaryData: NSData(), associatedPin: self.selectedPin, context: self.stack.context) // TODO: Title of the photo, localPath?, imageBinaryData?
                     }
                     // Saving CoreData DB status.
                     self.stack.save()
+                    self.newCollectionButton.isEnabled = true
                 }
             }
         }
     }
     
-    // MARK - Actions
+    // MARK: - Actions
     @IBAction func newCollectionButtonAction(_ sender: Any) {
-        // Network request to get the images when new collection button is tapped.
-        print("Reloading the request.")
-        getImages()
+        print("Clearing the CoreData Database before requesting more images")
+        deleteAllPhotosForThisPin {
+            // Network request to get the images when new collection button is tapped.
+            print("Reloading the request.")
+            getImages()
+        }
     }
     
-    // TODO: Enable New Collection button when the result of the request has arrived and disable button when the request is still loading.
+    func deleteAllPhotosForThisPin(_ completionHandler: () -> Void){
+        newCollectionButton.isEnabled = false
+        numberOfPhotos = 0
+        for photo in fetchedResultsController.fetchedObjects as![Photo]{
+            stack.context.delete(photo)
+        }
+        stack.save()
+        collectionView.reloadData()
+        completionHandler()
+        collectionView.reloadData()
+        // TODO: Check if we need the following line or not.
+        //newCollectionButton.isEnabled = true
+    }
+    
+
     // TODO: Select a photo (or several photos) and display the button "Remove Selected Pictures".
     // TODO: Remove selected pictures action. a) Remove them from the CoreData BD, b) Update UICollectionView.
     
-    // MARK - CoreData
+    // MARK: - CoreData
     
     func getImagesForPin(){
         numberOfPhotos = (fetchedResultsController.fetchedObjects?.count)!

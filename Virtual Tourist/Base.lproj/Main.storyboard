@@ -159,6 +159,7 @@
                     <connections>
                         <outlet property="collectionView" destination="N2s-l3-PX2" id="Ubc-LZ-YUb"/>
                         <outlet property="mapViewPhotoAlbum" destination="yJb-hp-78o" id="4GC-Xp-yVm"/>
+                        <outlet property="newCollectionButton" destination="kto-rW-849" id="1Ms-9H-Yti"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Poc-xv-S8K" userLabel="First Responder" sceneMemberID="firstResponder"/>
