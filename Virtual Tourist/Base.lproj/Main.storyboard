@@ -139,8 +139,8 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
-                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kto-rW-849">
-                                <rect key="frame" x="135" y="629" width="104" height="30"/>
+                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kto-rW-849">
+                                <rect key="frame" x="16" y="629" width="343" height="30"/>
                                 <state key="normal" title="New Collection"/>
                                 <connections>
                                     <action selector="newCollectionButtonAction:" destination="2dy-bI-DtK" eventType="touchUpInside" id="j2i-BU-aiT"/>
@@ -153,6 +153,8 @@
                             <constraint firstAttribute="trailing" secondItem="yJb-hp-78o" secondAttribute="trailing" id="TMe-XW-UEt"/>
                             <constraint firstItem="yJb-hp-78o" firstAttribute="leading" secondItem="Omt-sP-oqI" secondAttribute="leading" id="YsK-AJ-tnS"/>
                             <constraint firstItem="kto-rW-849" firstAttribute="centerX" secondItem="Omt-sP-oqI" secondAttribute="centerX" id="bhb-or-SBU"/>
+                            <constraint firstItem="kto-rW-849" firstAttribute="trailing" secondItem="Omt-sP-oqI" secondAttribute="trailingMargin" id="dIc-7z-m4L"/>
+                            <constraint firstItem="kto-rW-849" firstAttribute="leading" secondItem="Omt-sP-oqI" secondAttribute="leadingMargin" id="fOo-fm-VvB"/>
                             <constraint firstItem="Pqy-g4-jgc" firstAttribute="top" secondItem="kto-rW-849" secondAttribute="bottom" constant="8" id="fb5-hR-NKz"/>
                         </constraints>
                     </view>

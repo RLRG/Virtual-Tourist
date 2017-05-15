@@ -265,27 +265,26 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
         selectedPhotosToDelete[indexPath] = photo
         //collectionView.deselectItem(at: indexPath, animated: true) // TODO: Check if this line is needed or not.
         
-        if (selectedPhotosToDelete.count > 0 && self.newCollectionButton.titleLabel?.text != "Remove Selected Photos") {
-            DispatchQueue.main.async {
-                self.newCollectionButton.titleLabel?.text = "Remove Selected Photos"
-            }
-        } else if (selectedPhotosToDelete.count == 0 && self.newCollectionButton.titleLabel?.text != "New Collection") {
-            DispatchQueue.main.async {
-                self.newCollectionButton.titleLabel?.text = "New Collection"
-            }
-        }
+        changeButtonAppearanceIfNeeded()
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         print("Deselecting the photo at index\(indexPath)")
         selectedPhotosToDelete.removeValue(forKey: indexPath)
+        changeButtonAppearanceIfNeeded()
+    }
+    
+    func changeButtonAppearanceIfNeeded()
+    {
         if (selectedPhotosToDelete.count > 0 && self.newCollectionButton.titleLabel?.text != "Remove Selected Photos") {
             DispatchQueue.main.async {
-                self.newCollectionButton.titleLabel?.text = "Remove Selected Photos"
+                self.newCollectionButton.setTitle("Remove Selected Photos", for: UIControlState.normal)
+                self.newCollectionButton.sizeToFit()
             }
         } else if (selectedPhotosToDelete.count == 0 && self.newCollectionButton.titleLabel?.text != "New Collection") {
             DispatchQueue.main.async {
-                self.newCollectionButton.titleLabel?.text = "New Collection"
+                self.newCollectionButton.setTitle("New Collection", for: UIControlState.normal)
+                self.newCollectionButton.sizeToFit()
             }
         }
     }
