@@ -65,7 +65,7 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
     func loadMapInfoAndCenterMap() {
         
         ///////// COORDINATES //////////
-        var centerCoordinate = CLLocationCoordinate2D()
+        var centerCoordinate = CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0)
         
         // latitude
         if UserDefaults.standard.object(forKey: Constants.MapInfo.mapCenterLatitude) != nil {
@@ -86,7 +86,7 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
         }
         
         ///////// ZOOM LEVEL //////////
-        var span = MKCoordinateSpan()
+        var span = MKCoordinateSpan(latitudeDelta: 0.0, longitudeDelta: 0.0)
         
         // latitudeDelta
         if UserDefaults.standard.object(forKey: Constants.MapInfo.mapZoomLatitude) != nil {
@@ -94,7 +94,8 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
             span.latitudeDelta = UserDefaults.standard.double(forKey: Constants.MapInfo.mapZoomLatitude)
         } else{
             print("Creating the UserDefaults value for latitudeDelta")
-            UserDefaults.standard.set(mapView.region.span.latitudeDelta, forKey: Constants.MapInfo.mapZoomLatitude)
+            print(mapView.region.span.latitudeDelta)
+            UserDefaults.standard.set(2, forKey: Constants.MapInfo.mapZoomLatitude)
         }
         
         // longitudeDelta
@@ -103,14 +104,19 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
             span.longitudeDelta = UserDefaults.standard.double(forKey: Constants.MapInfo.mapZoomLongitude)
         } else{
             print("Creating the UserDefaults value for longitudeDelta")
+            print(mapView.region.span.longitudeDelta)
             UserDefaults.standard.set(mapView.region.span.longitudeDelta, forKey: Constants.MapInfo.mapZoomLongitude)
         }
         
         UserDefaults.standard.synchronize()
         
         ///////// SET REGION //////////
-        let region = MKCoordinateRegion(center: centerCoordinate, span: span)
-        mapView.setRegion(region, animated: true)
+        // Only if there are data persisted in the app.
+        if (centerCoordinate.latitude != 0.0 && centerCoordinate.longitude != 0.0 && span.latitudeDelta != 0.0 && span.longitudeDelta != 0.0) {
+            let region = MKCoordinateRegion(center: centerCoordinate, span: span)
+            mapView.setRegion(region, animated: true)
+        }
+        
     }
     
     func persistMapInfo() {

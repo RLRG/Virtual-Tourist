@@ -17,9 +17,11 @@ class CollectionViewCell: UICollectionViewCell{
     override func prepareForReuse() {
         if image.image == nil{
             activityIndicator.startAnimating()
+            self.backgroundColor = UIColor.blue
         }
         else{
             activityIndicator.stopAnimating()
+            self.backgroundColor = UIColor.white
         }
     }
 }
