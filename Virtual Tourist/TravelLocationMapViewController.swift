@@ -305,17 +305,4 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
             photoAlbumVC.selectedPin = selectedPin
         }
     }
-    
-    // To present an error alert view
-    func displayErrorAlertViewWithMessage (_ errorString: String) {
-        
-        let alertController = UIAlertController()
-        alertController.title = "ERROR"
-        alertController.message = errorString
-        let okAction = UIAlertAction(title: "ok", style: UIAlertActionStyle.default) { action in
-            self.dismiss(animated: true, completion: nil)
-        }
-        alertController.addAction(okAction)
-        present(alertController, animated: true, completion:nil)
-    }
 }

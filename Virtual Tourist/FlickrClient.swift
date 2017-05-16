@@ -39,8 +39,7 @@ class FlickrClient {
             }
         }
         else {
-            // TODO: Manage error.
-            // photoTitleLabel.text = "Lat should be [-90, 90].\nLon should be [-180, 180]."
+            completionHandler(false, "Lat should be [-90, 90].\nLon should be [-180, 180].", nil)
         }
     }
     
@@ -59,34 +58,26 @@ class FlickrClient {
         // create network request
         let task = session.dataTask(with: request) { (data, response, error) in
             
-            // if an error occurs, print it and re-enable the UI
-            func displayError(_ error: String) {
-                print(error)
-                performUIUpdatesOnMain {
-                    // TODO: Manage error.
-//                    self.setUIEnabled(true)
-//                    self.photoTitleLabel.text = "No photo returned. Try again."
-//                    self.photoImageView.image = nil
-                    //print("There was an error with your request: \(error)")
-                    //completionHandler(nil, NSError(domain: "searchForImages", code: 2, userInfo: nil))
-                }
+            func logErrorAndFinish (_ errorString: String) {
+                print(errorString)
+                completionHandler(nil, NSError(domain: errorString, code: -1, userInfo: nil))
             }
             
             /* GUARD: Was there an error? */
             guard (error == nil) else {
-                displayError("There was an error with your request: \(String(describing: error))")
+                logErrorAndFinish("There was an error with your request: \(String(describing: error))")
                 return
             }
             
             /* GUARD: Did we get a successful 2XX response? */
             guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
-                displayError("Your request returned a status code other than 2xx!")
+                logErrorAndFinish("Your request returned a status code other than 2xx!")
                 return
             }
             
             /* GUARD: Was there any data returned? */
             guard let data = data else {
-                displayError("No data was returned by the request!")
+                logErrorAndFinish("No data was returned by the request!")
                 return
             }
             
@@ -95,17 +86,15 @@ class FlickrClient {
             do {
                 parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as AnyObject
             } catch {
-                displayError("Could not parse the data as JSON: '\(data)'")
+                logErrorAndFinish("Could not parse the data as JSON: '\(data)'")
                 return
             }
             
             /* GUARD: Did Flickr return an error (stat != ok)? */
             guard let stat = parsedResult[Constants.FlickrResponseKeys.Status] as? String, stat == Constants.FlickrResponseValues.OKStatus else {
-                displayError("Flickr API returned an error. See error code and message in \(parsedResult)")
+                logErrorAndFinish("Flickr API returned an error. See error code and message in \(parsedResult)")
                 return
             }
-            
-            // TODO: Manage all the cases with the completionHandler.
             completionHandler(parsedResult, nil)
         }
         
@@ -126,38 +115,28 @@ class FlickrClient {
         // create network request
         let task = session.dataTask(with: request) { (data, response, error) in
             
-            // if an error occurs, print it and re-enable the UI
-            func displayError(_ error: String) {
-                print(error)
-                performUIUpdatesOnMain {
-                    // TODO: Manage error.
-                    //                    self.setUIEnabled(true)
-                    //                    self.photoTitleLabel.text = "No photo returned. Try again."
-                    //                    self.photoImageView.image = nil
-                    //print("There was an error with your request: \(error)")
-                    //completionHandler(nil, NSError(domain: "searchForImages", code: 2, userInfo: nil))
-                }
+            func logErrorAndFinish (_ errorString: String) {
+                print(errorString)
+                completionHandler(false, errorString, nil)
             }
             
             /* GUARD: Was there an error? */
             guard (error == nil) else {
-                displayError("There was an error with your request: \(String(describing: error))")
+                logErrorAndFinish("There was an error with your request: \(String(describing: error))")
                 return
             }
             
             /* GUARD: Did we get a successful 2XX response? */
             guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
-                displayError("Your request returned a status code other than 2xx!")
+                logErrorAndFinish("Your request returned a status code other than 2xx!")
                 return
             }
             
             /* GUARD: Was there any data returned? */
             guard let data = data else {
-                displayError("No data was returned by the request!")
+                logErrorAndFinish("No data was returned by the request!")
                 return
             }
-            
-            // TODO: Manage all the cases with the completionHandler.
             completionHandler(true, nil, data as AnyObject)
         }
         

@@ -152,18 +152,14 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate, NSFetchedR
             if success{
                 /* GUARD: Is "photos" key in our result? */
                 guard let photosDictionary = data?[Constants.FlickrResponseKeys.Photos] as? [String:AnyObject] else {
-                    // TODO: Manage ERROR
-                    //displayError("Cannot find keys '\(Constants.FlickrResponseKeys.Photos)' in \(parsedResult)")
-                    print("ERROR")
+                    ErrorAlertController.displayErrorAlertViewWithMessage("There are no photos returned in the response (photos dict)", caller: self)
                     return
                 }
                 print("photosDictionary: \(photosDictionary)")
                 
-                /* GUARD: XXXXXXXXXXXXXXXXXXXXXXXX? */
+                /* GUARD: Is "photo" key in our result?? */
                 guard let photosArray = photosDictionary[Constants.FlickrResponseKeys.Photo] as? [[String:AnyObject]] else {
-                    // TODO: Manage ERROR
-                    //displayError("Cannot find key '\(Constants.FlickrResponseKeys.Pages)' in \(photosDictionary)")
-                    print("ERROR")
+                    ErrorAlertController.displayErrorAlertViewWithMessage("There are no photos returned in the response (photos array)", caller: self)
                     return
                 }
                 print("photosArray \(photosArray)")
@@ -184,6 +180,8 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate, NSFetchedR
                     // Requesting the image binary data.
                     self.getImagesForPin()
                 }
+            } else {
+                ErrorAlertController.displayErrorAlertViewWithMessage(message ?? "The request was not successful. Try again! ", caller: self)
             }
         }
     }
@@ -221,12 +219,11 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate, NSFetchedR
                             }
                         }
                         else{
-                            // TODO: Manage ERROR
-                            //completionHandler(false, "The data was not an image.")
+                            print("The data of the image couldn't be persisted.")
                         }
                     }
                     else{
-                        //TODO: Handle error
+                        print(message ?? "The data of the image couldn't be persisted.")
                     }
                     
                     DispatchQueue.main.async {
