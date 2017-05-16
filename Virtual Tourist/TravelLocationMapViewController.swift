@@ -267,14 +267,15 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
     // This delegate method is implemented to respond to taps on the pins.
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         
-        // It is important to include this code if we want to select this pin again.
-        mapView.deselectAnnotation(view.annotation, animated: false)
-        
         // Looking for the pin in CoreData.
         let pin = getPinFromAnnotation(view.annotation as! MKPointAnnotation)
         
         // Action: Tapping on a pin.
         if operationModeAddDelete { // Operation mode: "Add"
+            
+            // It is important to include this code if we want to select this pin again.
+            mapView.deselectAnnotation(view.annotation, animated: false)
+            
             selectedPin = pin
             performSegue(withIdentifier: Constants.SegueIdentifiers.travelViewToPhotoAlbumSegue, sender: nil)
         } else { // Operation mode: "Delete"
