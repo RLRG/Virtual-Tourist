@@ -26,8 +26,6 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
     var selectedPin:Pin? = nil
     var isFirstLoading: Bool = true
     
-    // TODO: Apply the knowledge of the last lesson of the module "Core Data and Concurrency".
-    
     // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -43,6 +43,9 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate, NSFetchedR
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
         
+        // Allowing multiple selection property
+        self.collectionView.allowsMultipleSelection = true
+        
         // Setting the OK navigation item
         self.navigationItem.leftBarButtonItem = UIBarButtonItem (title: "Back", style: UIBarButtonItemStyle.plain, target: self, action: #selector(PhotoAlbumViewController.backButton))
         
@@ -66,7 +69,6 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate, NSFetchedR
         centerMap()
         
         // Getting the images of the pin
-        // TODO: Distinguish between the new pins and the ones that already have data. When it's new, we'll have to fill the CoreData DB and when the CoreData DB has data, we'll have to display the images stored there.
         if (firstTimeViewDidLayoutSubviewsIsCalled) {
             firstTimeViewDidLayoutSubviewsIsCalled = false
             if (numberOfPhotos == 0) {
@@ -128,6 +130,7 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate, NSFetchedR
                 // b) Update UICollectionView.
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
+                    self.changeButtonAppearanceIfNeeded()
                 }
             }
         }
@@ -258,6 +261,7 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate, NSFetchedR
         }
         stack.save()
         selectedPhotosToDelete.removeAll()
+        completionHandler()
     }
 }
 
@@ -280,6 +284,12 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
             cell.activityIndicator.isHidden = true
             if let binaryData = photo.imageData {
                 cell.image.image = UIImage(data: binaryData as Data)
+                
+                if (cell.isSelected) {
+                    cell.image.alpha = 0.25
+                } else {
+                    cell.image.alpha = 1
+                }
             }
         }
         else{
@@ -301,17 +311,24 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("Selecting the photo at index\(indexPath)")
         let photo = fetchedResultsController.object(at: indexPath) as! Photo
         selectedPhotosToDelete[indexPath] = photo
-        //collectionView.deselectItem(at: indexPath, animated: true) // TODO: Check if this line is needed or not.
-        
         changeButtonAppearanceIfNeeded()
+        
+        // Changing the cell representation
+        let cell = collectionView.cellForItem(at: indexPath) as! CollectionViewCell
+        cell.image.alpha = 0.25
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         print("Deselecting the photo at index\(indexPath)")
         selectedPhotosToDelete.removeValue(forKey: indexPath)
         changeButtonAppearanceIfNeeded()
+        
+        // Changing the cell representation
+        let cell = collectionView.cellForItem(at: indexPath) as! CollectionViewCell
+        cell.image.alpha = 1
     }
     
     func changeButtonAppearanceIfNeeded()
