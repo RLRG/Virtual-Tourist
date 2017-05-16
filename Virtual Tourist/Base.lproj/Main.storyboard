@@ -97,10 +97,9 @@
                                     <constraint firstAttribute="height" constant="160" id="puI-Ne-udn"/>
                                 </constraints>
                             </mapView>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="N2s-l3-PX2">
-                                <rect key="frame" x="0.0" y="232" width="375" height="427"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="N2s-l3-PX2">
+                                <rect key="frame" x="0.0" y="232" width="375" height="389"/>
+                                <color key="backgroundColor" red="0.05472160130739212" green="0.011943234130740166" blue="0.015561467036604881" alpha="0.11130022321428572" colorSpace="custom" customColorSpace="sRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="SB4-42-Nm0">
                                     <size key="itemSize" width="50" height="50"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -118,7 +117,7 @@
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9O5-LG-Wxj">
                                                     <rect key="frame" x="2" y="2" width="46" height="46"/>
                                                 </imageView>
-                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Y1K-b1-ahP">
+                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Y1K-b1-ahP">
                                                     <rect key="frame" x="15" y="15" width="20" height="20"/>
                                                     <color key="color" red="1" green="0.71476724229999999" blue="0.25476330019999999" alpha="1" colorSpace="calibratedRGB"/>
                                                 </activityIndicatorView>
@@ -139,8 +138,8 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kto-rW-849">
-                                <rect key="frame" x="135" y="629" width="104" height="30"/>
+                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kto-rW-849">
+                                <rect key="frame" x="16" y="629" width="343" height="30"/>
                                 <state key="normal" title="New Collection"/>
                                 <connections>
                                     <action selector="newCollectionButtonAction:" destination="2dy-bI-DtK" eventType="touchUpInside" id="j2i-BU-aiT"/>
@@ -149,16 +148,23 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="N2s-l3-PX2" firstAttribute="top" secondItem="yJb-hp-78o" secondAttribute="bottom" constant="8" id="Fuq-pE-AGM"/>
+                            <constraint firstAttribute="trailing" secondItem="N2s-l3-PX2" secondAttribute="trailing" id="KZF-4u-UHM"/>
                             <constraint firstItem="yJb-hp-78o" firstAttribute="top" secondItem="ySq-9y-Gk0" secondAttribute="bottom" id="LKB-ON-8YL"/>
+                            <constraint firstItem="kto-rW-849" firstAttribute="top" secondItem="N2s-l3-PX2" secondAttribute="bottom" constant="8" id="Ss8-SQ-q7J"/>
                             <constraint firstAttribute="trailing" secondItem="yJb-hp-78o" secondAttribute="trailing" id="TMe-XW-UEt"/>
+                            <constraint firstItem="N2s-l3-PX2" firstAttribute="leading" secondItem="Omt-sP-oqI" secondAttribute="leading" id="U8I-So-hK8"/>
                             <constraint firstItem="yJb-hp-78o" firstAttribute="leading" secondItem="Omt-sP-oqI" secondAttribute="leading" id="YsK-AJ-tnS"/>
                             <constraint firstItem="kto-rW-849" firstAttribute="centerX" secondItem="Omt-sP-oqI" secondAttribute="centerX" id="bhb-or-SBU"/>
+                            <constraint firstItem="kto-rW-849" firstAttribute="trailing" secondItem="Omt-sP-oqI" secondAttribute="trailingMargin" id="dIc-7z-m4L"/>
+                            <constraint firstItem="kto-rW-849" firstAttribute="leading" secondItem="Omt-sP-oqI" secondAttribute="leadingMargin" id="fOo-fm-VvB"/>
                             <constraint firstItem="Pqy-g4-jgc" firstAttribute="top" secondItem="kto-rW-849" secondAttribute="bottom" constant="8" id="fb5-hR-NKz"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="N2s-l3-PX2" id="Ubc-LZ-YUb"/>
                         <outlet property="mapViewPhotoAlbum" destination="yJb-hp-78o" id="4GC-Xp-yVm"/>
+                        <outlet property="newCollectionButton" destination="kto-rW-849" id="1Ms-9H-Yti"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Poc-xv-S8K" userLabel="First Responder" sceneMemberID="firstResponder"/>

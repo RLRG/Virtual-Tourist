@@ -26,9 +26,6 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
     var selectedPin:Pin? = nil
     var isFirstLoading: Bool = true
     
-    // TODO: Creating a new version of the model in order to remove the 'Map' entity. It is not needed because the data is stored in UserDefaults.
-    // TODO: Apply the knowledge of the last lesson of the module "Core Data and Concurrency".
-    
     // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,7 +62,8 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
     
     func loadMapInfoAndCenterMap() {
         
-        var centerCoordinate = CLLocationCoordinate2D()
+        ///////// COORDINATES //////////
+        var centerCoordinate = CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0)
         
         // latitude
         if UserDefaults.standard.object(forKey: Constants.MapInfo.mapCenterLatitude) != nil {
@@ -85,20 +83,50 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
             UserDefaults.standard.set(mapView.centerCoordinate.longitude, forKey: Constants.MapInfo.mapCenterLongitude)
         }
         
-        // TODO: Zoom. How do I get the zoom level of the map? Getting the span of the surrounding area displayed (MKCoordinateRegionMakeWithDistance, mapView.setRegion)
+        ///////// ZOOM LEVEL //////////
+        var span = MKCoordinateSpan(latitudeDelta: 0.0, longitudeDelta: 0.0)
+        
+        // latitudeDelta
+        if UserDefaults.standard.object(forKey: Constants.MapInfo.mapZoomLatitude) != nil {
+            print("LatitudeDelta already exists: \(UserDefaults.standard.double(forKey: Constants.MapInfo.mapZoomLatitude))")
+            span.latitudeDelta = UserDefaults.standard.double(forKey: Constants.MapInfo.mapZoomLatitude)
+        } else{
+            print("Creating the UserDefaults value for latitudeDelta")
+            print(mapView.region.span.latitudeDelta)
+            UserDefaults.standard.set(2, forKey: Constants.MapInfo.mapZoomLatitude)
+        }
+        
+        // longitudeDelta
+        if UserDefaults.standard.object(forKey: Constants.MapInfo.mapZoomLongitude) != nil {
+            print("LongitudeDelta already exists: \(UserDefaults.standard.double(forKey: Constants.MapInfo.mapZoomLongitude))")
+            span.longitudeDelta = UserDefaults.standard.double(forKey: Constants.MapInfo.mapZoomLongitude)
+        } else{
+            print("Creating the UserDefaults value for longitudeDelta")
+            print(mapView.region.span.longitudeDelta)
+            UserDefaults.standard.set(mapView.region.span.longitudeDelta, forKey: Constants.MapInfo.mapZoomLongitude)
+        }
         
         UserDefaults.standard.synchronize()
-        mapView.setCenter(centerCoordinate, animated: true)
+        
+        ///////// SET REGION //////////
+        // Only if there are data persisted in the app.
+        if (centerCoordinate.latitude != 0.0 && centerCoordinate.longitude != 0.0 && span.latitudeDelta != 0.0 && span.longitudeDelta != 0.0) {
+            let region = MKCoordinateRegion(center: centerCoordinate, span: span)
+            mapView.setRegion(region, animated: true)
+        }
         
     }
     
     func persistMapInfo() {
         let lat = mapView.centerCoordinate.latitude
         let lon = mapView.centerCoordinate.longitude
-        print("Persisting map info. Lat:\(lat) , Lon:\(lon)")
+        let spanLat = mapView.region.span.latitudeDelta
+        let spanLon = mapView.region.span.longitudeDelta
+        print("Persisting map info. Lat:\(lat) , Lon:\(lon) , latDelta:\(spanLat) , lonDelta:\(spanLon)")
         UserDefaults.standard.set(lat, forKey: Constants.MapInfo.mapCenterLatitude)
         UserDefaults.standard.set(lon, forKey: Constants.MapInfo.mapCenterLongitude)
-        // TODO: Persist zoom.
+        UserDefaults.standard.set(spanLat, forKey: Constants.MapInfo.mapZoomLatitude)
+        UserDefaults.standard.set(spanLon, forKey: Constants.MapInfo.mapZoomLongitude)
         UserDefaults.standard.synchronize()
     }
 
@@ -125,8 +153,6 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
             // Here we create the annotation and set its coordinate, title, and subtitle properties
             let annotation = MKPointAnnotation()
             annotation.coordinate = coordinate
-            annotation.title = "Title test" // TODO: Set the title of the pin.
-            annotation.subtitle = "Subtitle test" // TODO: Set the subtitle of the pin.
             
             // Finally we place the annotation in an array of annotations.
             annotations.append(annotation)
@@ -152,7 +178,7 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
         // Fetch request looking for the corresponding Pin.
         var pins = [Pin]()
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Pin")
-        let pred = NSPredicate(format: "latitude = %@ and longitude = %@", argumentArray: [annotation.coordinate.latitude, annotation.coordinate.longitude])
+        let pred = NSPredicate(format: "latitude = %@ and longitude = %@", argumentArray: [Double(annotation.coordinate.latitude), Double(annotation.coordinate.longitude)])
         fetchRequest.predicate = pred
         do {
             let result = try stack.context.fetch(fetchRequest)
@@ -241,14 +267,15 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
     // This delegate method is implemented to respond to taps on the pins.
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         
-        // It is important to include this code if we want to select this pin again.
-        mapView.deselectAnnotation(view.annotation, animated: false)
-        
         // Looking for the pin in CoreData.
         let pin = getPinFromAnnotation(view.annotation as! MKPointAnnotation)
         
         // Action: Tapping on a pin.
         if operationModeAddDelete { // Operation mode: "Add"
+            
+            // It is important to include this code if we want to select this pin again.
+            mapView.deselectAnnotation(view.annotation, animated: false)
+            
             selectedPin = pin
             performSegue(withIdentifier: Constants.SegueIdentifiers.travelViewToPhotoAlbumSegue, sender: nil)
         } else { // Operation mode: "Delete"
@@ -278,18 +305,5 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
             let photoAlbumVC = segue.destination as! PhotoAlbumViewController
             photoAlbumVC.selectedPin = selectedPin
         }
-    }
-    
-    // To present an error alert view
-    func displayErrorAlertViewWithMessage (_ errorString: String) {
-        
-        let alertController = UIAlertController()
-        alertController.title = "ERROR"
-        alertController.message = errorString
-        let okAction = UIAlertAction(title: "ok", style: UIAlertActionStyle.default) { action in
-            self.dismiss(animated: true, completion: nil)
-        }
-        alertController.addAction(okAction)
-        present(alertController, animated: true, completion:nil)
     }
 }

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CB0BC5931EC91DC8007913D7 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0BC5921EC91DC8007913D7 /* CollectionViewCell.swift */; };
+		CB1484381ECB18E200B1FB40 /* ErrorAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1484371ECB18E200B1FB40 /* ErrorAlertController.swift */; };
 		CBBDF48F1E46476A0093F778 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBDF48E1E46476A0093F778 /* AppDelegate.swift */; };
 		CBBDF4911E46476A0093F778 /* TravelLocationMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBDF4901E46476A0093F778 /* TravelLocationMapViewController.swift */; };
 		CBBDF4941E46476A0093F778 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CBBDF4921E46476A0093F778 /* Main.storyboard */; };
@@ -48,6 +49,7 @@
 		CB0BC58F1EC91882007913D7 /* virtualTouristModel 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "virtualTouristModel 2.xcdatamodel"; sourceTree = "<group>"; };
 		CB0BC5921EC91DC8007913D7 /* CollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		CB0BC5941EC9223F007913D7 /* virtualTouristModel 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "virtualTouristModel 3.xcdatamodel"; sourceTree = "<group>"; };
+		CB1484371ECB18E200B1FB40 /* ErrorAlertController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorAlertController.swift; sourceTree = "<group>"; };
 		CBBDF48B1E46476A0093F778 /* Virtual Tourist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Virtual Tourist.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBBDF48E1E46476A0093F778 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CBBDF4901E46476A0093F778 /* TravelLocationMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelLocationMapViewController.swift; sourceTree = "<group>"; };
@@ -179,6 +181,7 @@
 				CBEF31C51E47D8850031F4ED /* Networking */,
 				CBBDF4901E46476A0093F778 /* TravelLocationMapViewController.swift */,
 				CBBDF4C61E464B3C0093F778 /* PhotoAlbumViewController.swift */,
+				CB1484371ECB18E200B1FB40 /* ErrorAlertController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -350,6 +353,7 @@
 				CBBDF48F1E46476A0093F778 /* AppDelegate.swift in Sources */,
 				CBEF31C11E47B88B0031F4ED /* Constants.swift in Sources */,
 				CBEF31C41E47D6C00031F4ED /* GCDBlackBox.swift in Sources */,
+				CB1484381ECB18E200B1FB40 /* ErrorAlertController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

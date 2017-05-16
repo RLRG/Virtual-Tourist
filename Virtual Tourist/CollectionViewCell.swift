@@ -15,11 +15,15 @@ class CollectionViewCell: UICollectionViewCell{
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
     
     override func prepareForReuse() {
+        super.prepareForReuse()
+        
         if image.image == nil{
             activityIndicator.startAnimating()
+            self.backgroundColor = UIColor.blue
         }
         else{
             activityIndicator.stopAnimating()
+            self.backgroundColor = UIColor.white
         }
     }
 }
