@@ -50,6 +50,7 @@
 		CB0BC5921EC91DC8007913D7 /* CollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		CB0BC5941EC9223F007913D7 /* virtualTouristModel 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "virtualTouristModel 3.xcdatamodel"; sourceTree = "<group>"; };
 		CB1484371ECB18E200B1FB40 /* ErrorAlertController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorAlertController.swift; sourceTree = "<group>"; };
+		CB14843B1ECC3A1B00B1FB40 /* virtualTouristModel 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "virtualTouristModel 4.xcdatamodel"; sourceTree = "<group>"; };
 		CBBDF48B1E46476A0093F778 /* Virtual Tourist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Virtual Tourist.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBBDF48E1E46476A0093F778 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CBBDF4901E46476A0093F778 /* TravelLocationMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelLocationMapViewController.swift; sourceTree = "<group>"; };
@@ -630,11 +631,12 @@
 		CBBDF4C31E46489C0093F778 /* virtualTouristModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				CB14843B1ECC3A1B00B1FB40 /* virtualTouristModel 4.xcdatamodel */,
 				CB0BC5941EC9223F007913D7 /* virtualTouristModel 3.xcdatamodel */,
 				CB0BC58F1EC91882007913D7 /* virtualTouristModel 2.xcdatamodel */,
 				CBBDF4C41E46489C0093F778 /* virtualTouristModel.xcdatamodel */,
 			);
-			currentVersion = CB0BC5941EC9223F007913D7 /* virtualTouristModel 3.xcdatamodel */;
+			currentVersion = CB14843B1ECC3A1B00B1FB40 /* virtualTouristModel 4.xcdatamodel */;
 			path = virtualTouristModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

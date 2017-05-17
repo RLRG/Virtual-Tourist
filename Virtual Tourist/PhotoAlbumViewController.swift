@@ -127,7 +127,17 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate, NSFetchedR
         if (selectedPhotosToDelete.count > 0) {
             // a) Remove them from the CoreData BD.
             deleteSelectedPhotos {
-                // b) Update UICollectionView.
+                // b) Refreshing the CoreData query and updating the number of items in the collection view.
+                var error: NSError?
+                do {
+                    try fetchedResultsController.performFetch()
+                } catch let error1 as NSError {
+                    error = error1
+                    print(error!)
+                }
+                numberOfPhotos = (fetchedResultsController.fetchedObjects?.count)!
+                
+                // c) Update UICollectionView
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
                     self.changeButtonAppearanceIfNeeded()
@@ -170,7 +180,7 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate, NSFetchedR
                         let photoTitleString = photo[Constants.FlickrResponseKeys.Title] as! String
                         print(photoURLString)
                         // Creating an instance of a Photo - CoreData object.
-                        _ = Photo(title: photoTitleString, url: photoURLString, localPath: "", imageBinaryData: NSData(), associatedPin: self.selectedPin, context: self.stack.context)
+                        _ = Photo(title: photoTitleString, url: photoURLString, containsImage: false, imageBinaryData: nil, associatedPin: self.selectedPin, context: self.stack.context)
                     }
                     
                     // Saving CoreData DB status.
@@ -208,13 +218,8 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate, NSFetchedR
                     if success{
                         if let _ = UIImage(data: data as! Data) {
                             DispatchQueue.main.async {
-                                let fileName = (photo.url! as NSString).lastPathComponent
-                                let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-                                let pathArray = [path, fileName]
-                                let fileURL = NSURL.fileURL(withPathComponents: pathArray)!
-                                FileManager.default.createFile(atPath: fileURL.path, contents: (data as! Data), attributes: nil)
-                                photo.localPath = fileURL.path
                                 photo.imageData = data as? NSData
+                                photo.containsImage = true
                                 self.stack.save()
                             }
                         }
@@ -253,7 +258,6 @@ class PhotoAlbumViewController : UIViewController, MKMapViewDelegate, NSFetchedR
         
         for photo in selectedPhotosToDelete as [IndexPath : Photo] {
             stack.context.delete(photo.value) // CoreData
-            ///////////////collectionView.deleteItems(at: [photo.key]) // CollectionView
             self.numberOfPhotos -= 1
         }
         stack.save()
@@ -276,7 +280,7 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionViewCell", for: indexPath) as! CollectionViewCell
         let photo = fetchedResultsController.object(at: indexPath) as! Photo
         
-        if photo.localPath != "" {
+        if photo.containsImage {
             cell.activityIndicator.stopAnimating()
             cell.activityIndicator.isHidden = true
             if let binaryData = photo.imageData {
