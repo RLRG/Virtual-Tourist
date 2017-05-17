@@ -298,10 +298,6 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
         return cell
     }
     
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize{        
         let collectionViewSize = collectionView.frame.size
         return CGSize(width: collectionViewSize.width/3.25, height: collectionViewSize.height/4.0)

@@ -292,7 +292,7 @@ class TravelLocationMapViewController: UIViewController, MKMapViewDelegate {
     }
     
     // It is called when the map has finished loading.
-    func mapViewDidFinishRenderingMap(_ mapView: MKMapView, fullyRendered: Bool) {
+    func mapViewDidFinishLoadingMap(_ mapView: MKMapView) {
         // Stop and hide a spinner.
         loadingSpinner.stopAnimating()
     }
